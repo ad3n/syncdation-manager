@@ -1,0 +1,256 @@
+{% extends 'layout/main.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/bootstrap4-toggle/css/bootstrap4-toggle.min.css') }}">
+{% endblock %}
+{% block content %}
+    {% apply spaceless %}
+    {% set menu = convert_to_menu(context) %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="float-right col-7">
+                        <div class="input-group input-group col-lg-12 float-left">
+                            <input type="text" name="table_search" id="sasSearchValue" class="form-control float-right" placeholder="{{ 'sas.table.action.search' | trans({}, 'tables') }}">
+                            <div class="input-group-append">
+                                <button type="submit" id="sasSearch" class="btn btn-default"><i class="cil-search pr-1 align-middle"></i>{{ 'sas.table.action.search' | trans({}, 'tables') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-left col-2">
+                        <a href="{{ path('KejawenLab\\ApiSkeleton\\Admin\\Controller\\Group\\Get', {id: group.id}) }}" class="btn btn-outline-secondary">{{ 'sas.form.action.back' | trans({}, 'forms') }}</a>
+                    </div>
+                </div>
+                <div class="card-body p-1">
+                    <div class="row">
+                        {% for key, data in paginator['items'] %}
+                            {% if 0 == key % 2 %}
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mt-1">
+                                        <div class="card-body p-0">
+                                            <ul class="list-group p-0">
+                                                <li class="list-group-item text-primary">
+                                                    No<a class="float-right">{{ (key + 1) + (paginator['per_page'] * (paginator['page'] - 1)) }}</a>
+                                                </li>
+                                                {% for property in properties %}
+                                                    {% if 'id' != property.name %}
+                                                        <li class="list-group-item text-primary">
+                                                            {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                                            {% if 'menu' == property.name or 'group' == property.name %}
+                                                                {% set relation = attribute(data, property.name) %}
+                                                                <a class="float-right">{{ relation.name ~ ' (' ~ relation.code ~ ')' }}</a>
+                                                            {% elseif
+                                                                'addable' == property.name or
+                                                                'editable' == property.name or
+                                                                'viewable' == property.name or
+                                                                'deletable' == property.name
+                                                            %}
+                                                                <a class="float-right">
+                                                                    {% if is_granted('add', convert_to_menu('group')) or is_granted('edit', convert_to_menu('group')) %}
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            class="permission-{{ property.name }}"
+                                                                            {% if attribute(data, property.name) %}checked{% endif%}
+                                                                            data-url="{{ path('KejawenLab\\ApiSkeleton\\Admin\\Controller\\Group\\PermissionPut', { groupId: group.id, id: data.id }) }}"
+                                                                            data-toggle="toggle"
+                                                                            data-onstyle="success"
+                                                                            data-offstyle="dark"
+                                                                            data-size="small"
+                                                                        >
+                                                                    {% else %}
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            {% if permission.viewable %}checked{% endif%} disabled
+                                                                            data-toggle="toggle"
+                                                                            data-onstyle="success"
+                                                                            data-offstyle="dark"
+                                                                            data-size="small"
+                                                                        >
+                                                                    {% endif %}
+                                                                </a>
+                                                            {% else %}
+                                                                <a class="float-right">{{ attribute(data, property.name) }}</a>
+                                                            {% endif %}
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mt-1">
+                                        <div class="card-body p-0">
+                                            <ul class="list-group p-0">
+                                                <li class="list-group-item text-primary">
+                                                    No<a class="float-right">{{ (key + 1) + (paginator['per_page'] * (paginator['page'] - 1)) }}</a>
+                                                </li>
+                                                {% for property in properties %}
+                                                    {% if 'id' != property.name %}
+                                                        <li class="list-group-item text-primary">
+                                                            {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                                            {% if 'menu' == property.name or 'group' == property.name %}
+                                                                {% set relation = attribute(data, property.name) %}
+                                                                <a class="float-right">{{ relation.name ~ ' (' ~ relation.code ~ ')' }}</a>
+                                                            {% elseif
+                                                                'addable' == property.name or
+                                                                'editable' == property.name or
+                                                                'viewable' == property.name or
+                                                                'deletable' == property.name
+                                                            %}
+                                                                <a class="float-right">
+                                                                    {% if is_granted('add', convert_to_menu('group')) or is_granted('edit', convert_to_menu('group')) %}
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            class="permission-{{ property.name }}"
+                                                                            {% if attribute(data, property.name) %}checked{% endif%}
+                                                                            data-url="{{ path('KejawenLab\\ApiSkeleton\\Admin\\Controller\\Group\\PermissionPut', { groupId: group.id, id: data.id }) }}"
+                                                                            data-toggle="toggle"
+                                                                            data-onstyle="success"
+                                                                            data-offstyle="dark"
+                                                                            data-size="small"
+                                                                        >
+                                                                    {% else %}
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            {% if permission.viewable %}checked{% endif%} disabled
+                                                                            data-toggle="toggle"
+                                                                            data-onstyle="success"
+                                                                            data-offstyle="dark"
+                                                                            data-size="small"
+                                                                        >
+                                                                    {% endif %}
+                                                                </a>
+                                                            {% else %}
+                                                                <a class="float-right">{{ attribute(data, property.name) }}</a>
+                                                            {% endif %}
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer clearfix">
+                    {% include 'layout/pagination.html.twig' with {paginator: paginator} %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endapply %}
+{% endblock %}
+{% block javascripts %}
+    {% apply spaceless %}
+        <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+        <script src="{{ asset('plugins/bootstrap4-toggle/js/bootstrap4-toggle.min.js') }}"></script>
+        <script>
+            $(document).ready(function () {
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                $('#toggle-two').bootstrapToggle({
+                    on: 'Yes',
+                    off: 'No'
+                });
+
+                $('#sasSearchValue').val(getParameterByName('q'));
+
+                $('#sasSearch').on('click', function () {
+                    window.location.href = '{{ path('KejawenLab\\ApiSkeleton\\Admin\\Controller\\Group\\Permission', { id: group.id }) }}?q=' + $('#sasSearchValue').val();
+                });
+
+                $(document).on('change', '.permission-viewable', function () {
+                    let url = $(this).data('url');
+                    let viewable = false;
+                    if ($(this).prop('checked')) {
+                        viewable = true;
+                    }
+
+                    redirectPost(url, 'view', viewable);
+                });
+
+                $(document).on('change', '.permission-addable', function () {
+                    let url = $(this).data('url');
+                    let addable = false;
+                    if ($(this).prop('checked')) {
+                        addable = true;
+                    }
+
+                    redirectPost(url, 'add', addable);
+                });
+
+                $(document).on('change', '.permission-editable', function () {
+                    let url = $(this).data('url');
+                    let editable = false;
+                    if ($(this).prop('checked')) {
+                        editable = true;
+                    }
+
+                    redirectPost(url, 'edit', editable);
+                });
+
+                $(document).on('change', '.permission-deletable', function () {
+                    let url = $(this).data('url');
+                    let deletable = false;
+                    if ($(this).prop('checked')) {
+                        deletable = true;
+                    }
+
+                    redirectPost(url, 'delete', deletable);
+                });
+
+                function redirectPost(url, type, value) {
+                    let form = document.createElement('form');
+                    let valueInput = document.createElement('input');
+                    let typeInput = document.createElement('input');
+
+                    document.body.appendChild(form);
+
+                    form.method = 'post';
+                    form.action = url;
+
+                    valueInput.type = 'hidden';
+                    valueInput.name = 'value';
+                    valueInput.value = value;
+
+                    typeInput.type = 'hidden';
+                    typeInput.name = 'type';
+                    typeInput.value = type;
+
+                    form.appendChild(valueInput);
+                    form.appendChild(typeInput);
+                    form.submit();
+                }
+
+                {% for message in app.flashes('info') %}
+                    toastr['success']('{{ message | trans({}, 'pages') }}');
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                    toastr['error']('{{ message | trans({}, 'pages') }}');
+                {% endfor %}
+            });
+        </script>
+    {% endapply %}
+{% endblock %}

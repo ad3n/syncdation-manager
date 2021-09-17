@@ -1,0 +1,32 @@
+framework:
+    trusted_proxies: '192.0.0.1,172.0.0.0/8,10.0.0.0/8'
+    trusted_headers: [ 'x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port' ]
+    translator:
+        enabled: true
+        enabled_locales: ['id']
+    secret: '%env(APP_SECRET)%'
+    csrf_protection: false
+    http_cache: true
+    #http_method_override: true
+
+    # Enables session support. Note that the session will ONLY be started if you read or write from it.
+    # Remove or comment this section to explicitly disable session support.
+    session:
+        cookie_lifetime: 3600
+        enabled: true
+        use_cookies: true
+        handler_id: snc_redis.session.handler
+    rate_limiter:
+        username_ip_login:
+            policy: token_bucket
+            limit: 5
+            rate: { interval: '5 minutes' }
+
+        ip_login:
+            policy: sliding_window
+            limit: 50
+            interval: '15 minutes'
+    #esi: true
+    #fragments: true
+    php_errors:
+        log: true

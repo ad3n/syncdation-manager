@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        env_file:
+          - .env
+        volumes:
+            - .:/semart:cached
+            - cache:/semart/var/cache
+            - vendor:/semart/vendor
+        ports:
+            - "9876:9501"
+        links:
+            - session
+            - db
+            - messenger
+        depends_on:
+            - session
+    db:
+        image: postgres:alpine
+        environment:
+            POSTGRES_USER: semart
+            POSTGRES_PASSWORD: semart
+    adminer:
+        image: adminer:latest
+        ports:
+            - "6789:8080"
+        links:
+            - db
+    session:
+        image: redis:alpine
+    messenger:
+        image: rabbitmq:management-alpine
+        ports:
+            - "12345:15672"
+volumes:
+    cache:
+    vendor:

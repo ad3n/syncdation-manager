@@ -1,0 +1,8 @@
+vich_uploader:
+    db_driver: orm
+    storage: '@KejawenLab\ApiSkeleton\Media\Storage'
+    mappings:
+        media:
+            uri_prefix: '%env(resolve:APP_MEDIA_PREFIX)%'
+            upload_destination: '%env(resolve:APP_UPLOAD_DIR)%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

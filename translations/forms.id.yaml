@@ -1,0 +1,58 @@
+sas:
+    form:
+        field:
+            empty_select: '---PILIH SALAH SATU---'
+            login:
+                username: 'Nama Pengguna'
+                password: 'Kata Sandi'
+            media:
+                file: 'File'
+                folder: 'Folder'
+                public: 'Publik?'
+            group:
+                code: 'Kode'
+                name: 'Nama'
+            user:
+                group: 'Grup'
+                supervisor: 'Pengawas'
+                username: 'Penguna'
+                profileImage: 'Foto Profil'
+                fullName: 'Nama Lengkap'
+                email: 'Email'
+                plainPassword: 'Kata Sandi'
+                oldPassword: 'Kata Sandi Lama'
+                newPassword: 'Kata Sandi Baru'
+            setting:
+                group: 'Grup'
+                parameter: 'Parameter'
+                value: 'Nilai'
+                public: 'Publik?'
+            menu:
+                parent: 'Induk'
+                code: 'Kode'
+                name: 'Nama'
+                routeName: 'Nama Rute'
+                iconClass: 'CSS Icon Class'
+                sortOrder: 'Urutan'
+                showable: 'Tampilkan?'
+                adminOnly: 'Khusus Admin?'
+            cron:
+                name: 'Nama'
+                description: 'Deskripsi'
+                command: 'Perintah'
+                schedule: 'Jadwal'
+                enabled: 'Aktif'
+                symfonyCommand: 'Perintah Symfony'
+            api_client:
+                name: 'Nama'
+        action:
+            run: 'Jalankan'
+            cron_logs: 'Riwayat Pekerjaan'
+            api_request_logs: 'Riwayat Permintaan'
+            api_key: 'Daftar Token API'
+            permission: 'Hak Akses'
+            add: 'Tambah'
+            submit: 'Simpan'
+            back: 'Kembali'
+            cancel: 'Batal'
+            audit: 'Tampilkan Perubahan'

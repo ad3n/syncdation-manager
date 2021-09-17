@@ -1,0 +1,19 @@
+framework:
+    messenger:
+        failure_transport: failed
+        transports:
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                failure_transport: failed
+                retry_strategy:
+                    max_retries: 3
+                    delay: 5000
+                    multiplier: 2
+                    max_delay: 0
+            failed: 'doctrine://default?queue_name=failed'
+            sync: 'sync://'
+        routing:
+            KejawenLab\ApiSkeleton\Service\Message\EntityPersisted: sync
+            KejawenLab\ApiSkeleton\Service\Message\EntityRemoved: async
+            KejawenLab\ApiSkeleton\ApiClient\Message\RequestLog: async
+            KejawenLab\ApiSkeleton\Security\Message\PasswordHistory: async

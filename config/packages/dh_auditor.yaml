@@ -1,0 +1,23 @@
+# Full configuration reference available at:
+# https://damienharper.github.io/auditor-docs/docs/auditor-bundle/configuration/reference.html
+dh_auditor:
+    enabled: true
+    timezone: 'Asia/Jakarta'
+    providers:
+        doctrine:
+            table_prefix: null
+            table_suffix: '_audit'
+            viewer: false
+            ignored_columns:
+                - createdAt
+                - deletedAt
+                - updatedAt
+            entities:
+                KejawenLab\ApiSkeleton\Entity\ApiClient: ~
+                KejawenLab\ApiSkeleton\Entity\Cron: ~
+                KejawenLab\ApiSkeleton\Entity\Group: ~
+                KejawenLab\ApiSkeleton\Entity\Media: ~
+                KejawenLab\ApiSkeleton\Entity\Menu: ~
+                KejawenLab\ApiSkeleton\Entity\Permission: ~
+                KejawenLab\ApiSkeleton\Entity\Setting: ~
+                KejawenLab\ApiSkeleton\Entity\User: ~

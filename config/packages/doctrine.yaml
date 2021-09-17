@@ -1,0 +1,38 @@
+doctrine:
+    dbal:
+        driver: '%env(resolve:DATABASE_DRIVER)%'
+        dbname: '%env(resolve:DATABASE_NAME)%'
+        host: '%env(resolve:DATABASE_HOST)%'
+        port: '%env(resolve:DATABASE_PORT)%'
+        user: '%env(resolve:DATABASE_USER)%'
+        charset: '%env(resolve:DATABASE_CHARSET)%'
+        schema_filter: ~^(?!(core_|refresh_tokens|messenger_messages))~
+        default_table_options:
+            charset: '%env(resolve:DATABASE_CHARSET)%'
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        query_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
+        filters:
+            semart_softdeletable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+        mappings:
+            Semart:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/lib/Entity'
+                prefix: 'KejawenLab\ApiSkeleton\Entity'
+                alias: Semart
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/app/Entity'
+                prefix: 'KejawenLab\Application\Entity'
+                alias: App

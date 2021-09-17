@@ -1,0 +1,75 @@
+security:
+    enable_authenticator_manager: true
+    password_hashers:
+        KejawenLab\ApiSkeleton\Security\User:
+            algorithm: auto
+    providers:
+        user_provider:
+            id: KejawenLab\ApiSkeleton\Security\Service\UserProviderFactory
+    firewalls:
+        api_token_refresh:
+            pattern: ^/api/token/refresh
+            stateless: true
+            refresh_jwt: ~
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|img|js|lib|fonts|bundles)/
+            security: false
+        admin:
+            pattern: ^/admin
+            lazy: true
+            switch_user: true
+            login_throttling:
+                limiter: semart_login_rate_limiter
+            custom_authenticators:
+                    - KejawenLab\ApiSkeleton\Security\AdminAuthenticator
+            logout:
+                path: admin_logout
+        api_login:
+            pattern:  ^/api/login
+            stateless: true
+            lazy: true
+            provider: user_provider
+            login_throttling:
+                limiter: semart_login_rate_limiter
+            json_login:
+                check_path: /api/login
+                username_path: username
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api_doc:
+            pattern: ^/api/doc$
+            methods: ['GET']
+            security: false
+        api_public_media:
+            pattern: ^/api/medias/public
+            methods: ['GET']
+            security: false
+        api_public_setting:
+            pattern: ^/api/settings/public
+            methods: ['GET']
+            security: false
+        api_public:
+            pattern: ^/api/public
+            security: false
+        api_home:
+            pattern: ^/api$
+            security: false
+        api:
+            pattern: ^/api
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    access_control:
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['POST'] }
+        - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['GET', 'POST'] }
+        - { path: ^/api/doc$, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['GET'] }
+        - { path: ^/api/medias/public, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['GET'] }
+        - { path: ^/api/settings/public, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['GET'] }
+        - { path: ^/api/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: ROLE_USER }

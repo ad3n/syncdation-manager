@@ -1,0 +1,83 @@
+sas:
+    table:
+        show_records: 'Total Data: <b>%total%</b>'
+        action:
+            download: 'Unduh'
+            search: 'Cari'
+            view: 'Lihat'
+            edit: 'Ubah'
+            delete: 'Hapus'
+        column:
+            action: 'Pilihan'
+            audit:
+                type: 'Tipe'
+                log_time: 'Tanggal'
+                user_id: 'ID Pengguna'
+                username: 'Pengguna'
+                ip_address: 'Alamat IP'
+                data: 'Riwayat Data'
+            group:
+                code: 'Kode'
+                name: 'Nama'
+            user:
+                group: 'Grup'
+                supervisor: 'Pengawas'
+                username: 'Penguna'
+                profileImage: 'Foto Profil'
+                fullName: 'Nama Lengkap'
+                email: 'Email'
+                lastLogin: 'Login Terakhir'
+            menu:
+                parent: 'Induk'
+                code: 'Kode'
+                name: 'Nama'
+                sortOrder: 'Urutan'
+                iconClass: 'CSS Icon Class'
+                showable: 'Ditampilkan'
+                adminOnly: 'Khusus Admin'
+                apiPath: 'URL Api'
+                adminPath: 'URL Admin'
+            media:
+                fileName: 'Nama File'
+                folder: 'Lokasi Folder'
+                fileUrl: 'File'
+                public: 'Publik?'
+            setting:
+                group: 'Grup'
+                parameter: 'Parameter'
+                value: 'Nilai'
+                public: 'Publik?'
+            cron:
+                name: 'Nama'
+                description: 'Deskripsi'
+                command: 'Perintah'
+                schedule: 'Jadwal'
+                enabled: 'Aktif'
+                symfonyCommand: 'Perintah Symfony'
+                running: 'Sedang Berjalan?'
+            permission:
+                group: 'Group'
+                menu: 'Menu'
+                viewable: 'Hak View'
+                addable: 'Hak Tambah'
+                editable: 'Hak Edit'
+                deletable: 'Hak Hapus'
+            apiclient:
+                user: 'Pengguna'
+                name: 'Nama'
+                apiKey: 'Token'
+                secretKey: 'Kunci Rahasia'
+            cronreport:
+                cron: 'Perintah'
+                runAt: 'Waktu Eksekusi'
+                runtime: 'Lama Eksekusi'
+                output: 'Keluaran'
+                exitCode: 'Status'
+            apiclientrequest:
+                apiClient: 'Api Client'
+                path: 'URL'
+                method: 'Method'
+                headers: 'Headers'
+                queries: 'Queries'
+                requests: 'Post Data'
+                files: 'Files'
