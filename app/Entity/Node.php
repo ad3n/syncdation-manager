@@ -69,10 +69,21 @@ class Node implements NodeInterface
      *
      * @Assert\Length(max=255)
      * @Assert\NotBlank()
+     * @Assert\Url()
      *
      * @Groups({"read"})
      */
     private ?string $host;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Length(max=255)
+     * @Assert\NotBlank()
+     *
+     * @Groups({"read"})
+     */
+    private ?string $apiKey;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
@@ -154,6 +165,16 @@ class Node implements NodeInterface
     public function setHost(string $host): void
     {
         $this->host = $host;
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
+    }
+
+    public function setApiKey(?string $apiKey): void
+    {
+        $this->apiKey = $apiKey;
     }
 
     public function getStartAt(): ?\DateTime

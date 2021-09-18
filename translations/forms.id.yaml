@@ -43,6 +43,11 @@ sas:
                 schedule: 'Jadwal'
                 enabled: 'Aktif'
                 symfonyCommand: 'Perintah Symfony'
+            node:
+                code: "Kode"
+                name: "Nama"
+                host: "Host"
+                apiKey: "Api Key"
             api_client:
                 name: 'Nama'
         action:

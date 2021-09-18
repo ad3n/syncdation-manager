@@ -85,6 +85,14 @@ sas:
             add: 'Tambah Token API'
             name_not_provided: 'Nama token wajib diisi'
             max_api_client_reached: 'Jumlah Api Anda telah mencapai maksimal'
+        node:
+            saved: 'Node berhasil disimpan'
+            deleted: 'Node berhasil dihapus'
+            not_found: 'Node tidak ditemukan'
+            list: 'Daftar Node'
+            add: 'Tambah Node'
+            edit: 'Ubah Node'
+            view: 'Detil Node'
         cron_report:
             list: 'Riwayat Pekerjaan Terjadwal'
             success: 'Sukses'

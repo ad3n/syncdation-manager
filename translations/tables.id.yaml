@@ -73,6 +73,11 @@ sas:
                 runtime: 'Lama Eksekusi'
                 output: 'Keluaran'
                 exitCode: 'Status'
+            node:
+                code: 'Kode'
+                name: 'Nama'
+                host: 'Host'
+                apiKey: 'Api Key'
             apiclientrequest:
                 apiClient: 'Api Client'
                 path: 'URL'

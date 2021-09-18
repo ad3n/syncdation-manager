@@ -17,6 +17,8 @@ interface NodeInterface extends EntityInterface
 
     public function getHost(): ?string;
 
+    public function getApiKey(): ?string;
+
     public function getStartAt(): ?\DateTime;
 
     public function getLastPing(): ?\DateTime;

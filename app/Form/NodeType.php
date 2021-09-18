@@ -28,25 +28,9 @@ final class NodeType extends AbstractType
             'required' => true,
             'label' => 'sas.form.field.node.host',
         ]);
-        $builder->add('startAt', null, [
+        $builder->add('apiKey', null, [
             'required' => true,
-            'label' => 'sas.form.field.node.startAt',
-        ]);
-        $builder->add('lastPing', null, [
-            'required' => true,
-            'label' => 'sas.form.field.node.lastPing',
-        ]);
-        $builder->add('uptime', null, [
-            'required' => true,
-            'label' => 'sas.form.field.node.uptime',
-        ]);
-        $builder->add('downtime', null, [
-            'required' => true,
-            'label' => 'sas.form.field.node.downtime',
-        ]);
-        $builder->add('status', null, [
-            'required' => true,
-            'label' => 'sas.form.field.node.status',
+            'label' => 'sas.form.field.node.apiKey',
         ]);
     }
 

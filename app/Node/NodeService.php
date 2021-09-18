@@ -19,4 +19,47 @@ final class NodeService extends AbstractService implements ServiceInterface
     {
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
+
+    public function ping()
+    {
+    }
+
+    public function getEndpoints()
+    {
+
+    }
+
+    public function addEndpoint()
+    {
+
+    }
+
+    public function getServices()
+    {
+    }
+
+    public function getServiceByType(string $type)
+    {
+
+    }
+
+    public function getClients(string $serviceId)
+    {
+
+    }
+
+    public function getStatistic(string $serviceId)
+    {
+
+    }
+
+    public function getFiles(string $serviceId)
+    {
+
+    }
+
+    public function Call(string $path)
+    {
+
+    }
 }
