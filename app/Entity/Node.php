@@ -100,11 +100,11 @@ class Node implements NodeInterface
     private ?\DateTime $lastPing;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @Groups({"read"})
      */
-    private float $uptime;
+    private ?\DateTime $lastDown;
 
     /**
      * @ORM\Column(type="float")
@@ -127,7 +127,7 @@ class Node implements NodeInterface
         $this->host = null;
         $this->startAt = null;
         $this->lastPing = null;
-        $this->uptime = 0.0;
+        $this->lastDowntime = null;
         $this->downtime = 0.0;
         $this->status = false;
     }
@@ -197,14 +197,14 @@ class Node implements NodeInterface
         $this->lastPing = $lastPing;
     }
 
-    public function getUptime(): float
+    public function getLastDown(): ?\DateTime
     {
-        return $this->uptime;
+        return $this->lastDown;
     }
 
-    public function setUptime(float $uptime): void
+    public function setLastDown(?\DateTime $lastDown): void
     {
-        $this->uptime = $uptime;
+        $this->lastDown = $lastDown;
     }
 
     public function getDowntime(): float

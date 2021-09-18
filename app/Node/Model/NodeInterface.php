@@ -21,11 +21,21 @@ interface NodeInterface extends EntityInterface
 
     public function getStartAt(): ?\DateTime;
 
+    public function setStartAt(\DateTime $startAt): void;
+
     public function getLastPing(): ?\DateTime;
+
+    public function setLastPing(\DateTime $lastPing): void;
+
+    public function getLastDown(): ?\DateTime;
+
+    public function setLastDown(\DateTime $lastDown): void;
 
     public function getStatus(): bool;
 
-    public function getUptime(): ?float;
+    public function setStatus(bool $status): void;
 
     public function getDowntime(): ?float;
+
+    public function setDowntime(float $downtime): void;
 }
