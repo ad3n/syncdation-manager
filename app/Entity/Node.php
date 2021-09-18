@@ -76,6 +76,15 @@ class Node implements NodeInterface
     private ?string $host;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $prefix;
+
+    /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\Length(max=255)
@@ -107,11 +116,11 @@ class Node implements NodeInterface
     private ?\DateTime $lastDown;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      *
      * @Groups({"read"})
      */
-    private float $downtime;
+    private int $downtime;
 
     /**
      * @ORM\Column(type="boolean")
@@ -125,10 +134,11 @@ class Node implements NodeInterface
         $this->code = null;
         $this->name = null;
         $this->host = null;
+        $this->prefix = null;
         $this->startAt = null;
         $this->lastPing = null;
-        $this->lastDowntime = null;
-        $this->downtime = 0.0;
+        $this->lastDown = null;
+        $this->downtime = 0;
         $this->status = false;
     }
 
@@ -165,6 +175,16 @@ class Node implements NodeInterface
     public function setHost(string $host): void
     {
         $this->host = $host;
+    }
+
+    public function getPrefix(): ?string
+    {
+        return $this->prefix;
+    }
+
+    public function setPrefix(?string $prefix): void
+    {
+        $this->prefix = $prefix;
     }
 
     public function getApiKey(): ?string
@@ -207,12 +227,12 @@ class Node implements NodeInterface
         $this->lastDown = $lastDown;
     }
 
-    public function getDowntime(): float
+    public function getDowntime(): int
     {
         return $this->downtime;
     }
 
-    public function setDowntime(float $downtime): void
+    public function setDowntime(int $downtime): void
     {
         $this->downtime = $downtime;
     }

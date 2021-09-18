@@ -32,12 +32,15 @@
                             {% if property.name not in ["id", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
                                 <li class="list-group-item text-primary">
                                     {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
-                                    <a class="float-right">{{ attribute(data, property.name) }}</a>
+                                    <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
                         <li class="list-group-item p-1">
                             <div class="btn-group col-lg-12 col-md-12 col-sm-12" role="group">
+                                <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Get', {id: data.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                    {{ 'sas.table.action.view' | trans({}, 'tables') }}
+                                </a>
                                 {% if is_granted('edit', menu) %}
                                     <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Put', ({id: data.id}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
                                         {{ 'sas.table.action.edit' | trans({}, 'tables') }}

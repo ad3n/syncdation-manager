@@ -14,10 +14,10 @@
                     <div class="card-body p-1">
                         <ul class="list-group">
                             {% for property in properties %}
-                                {% if 'id' != property.name %}
+                                {% if property.name not in ["id", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
                                     <li class="list-group-item text-primary">
                                         {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
-                                        <a class="float-right">{{ attribute(data, property.name) }}</a>
+                                        <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
                                     </li>
                                 {% endif %}
                             {% endfor %}

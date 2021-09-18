@@ -17,6 +17,8 @@ interface NodeInterface extends EntityInterface
 
     public function getHost(): ?string;
 
+    public function getPrefix(): ?string;
+
     public function getApiKey(): ?string;
 
     public function getStartAt(): ?\DateTime;
@@ -35,7 +37,7 @@ interface NodeInterface extends EntityInterface
 
     public function setStatus(bool $status): void;
 
-    public function getDowntime(): ?float;
+    public function getDowntime(): ?int;
 
-    public function setDowntime(float $downtime): void;
+    public function setDowntime(int $downtime): void;
 }

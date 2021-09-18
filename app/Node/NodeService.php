@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace KejawenLab\Application\Node;
 
-use KejawenLab\Application\Node\Model\NodeInterface;
-use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
+use KejawenLab\Application\Node\Model\EndpointInterface;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 /**
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
@@ -30,80 +33,129 @@ final class NodeService extends AbstractService implements ServiceInterface
 
     public function ping(NodeInterface $node): void
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/ping', $this->getApiRoot($node->getHost())), [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'X-Syncdation-Key' => $node->getApiKey(),
-            ],
-        ]);
-        $node->setLastPing(new \DateTime());
-        if ($response->getStatusCode() === Response::HTTP_OK) {
-            if (!$node->getStatus()) {
-                if ($node->getLastDown()) {
-                    $node->setDowntime((float)(new \DateTime())->getTimestamp() - $node->getLastDown()->getTimestamp());
+        try {
+            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s%s/ping', $node->getHost(), $node->getPrefix()), [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'X-Syncdation-Key' => $node->getApiKey(),
+                ],
+            ]);
+            $node->setLastPing(new \DateTime());
+            if (Response::HTTP_OK === $response->getStatusCode()) {
+                if (!$node->getStatus()) {
+                    if ($node->getLastDown()) {
+                        $node->setDowntime((float)(new \DateTime())->getTimestamp() - $node->getLastDown()->getTimestamp());
+                    }
                 }
+
+                $node->setStatus(true);
+            } else {
+                if ($node->getStatus()) {
+                    $node->setLastDown(new \DateTime());
+                }
+
+                $node->setStatus(false);
             }
 
-            $node->setStatus(true);
-        } else {
-            if ($node->getStatus()) {
-                $node->setLastDown(new \DateTime());
-            }
-
-            $node->setStatus(false);
+            $this->save($node);
+        } catch (TransportExceptionInterface) {
         }
-
-        $this->save($node);
     }
 
     public function getEndpoints(NodeInterface $node): array
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/endpoints', $this->getApiRoot($node->getHost())), [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'X-Syncdation-Key' => $node->getApiKey(),
-            ],
-        ]);
-
-        return json_decode($response->getContent(), true);
+        return $this->request($node, 'endpoints');
     }
 
-    public function addEndpoint()
+    public function addEndpoint(NodeInterface $node, string $path, string $sqlQuery): int
     {
+        try {
+            $response = $this->httpClient->request(
+                Request::METHOD_POST,
+                sprintf('%s%s/endpoints', $node->getHost(), $node->getPrefix()),
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'X-Syncdation-Key' => $node->getApiKey(),
+                    ],
+                    'json' => [
+                        'path' => $path,
+                        'sql' => $sqlQuery,
+                    ]
+                ]
+            );
 
+            return $response->getStatusCode();
+        } catch (TransportExceptionInterface) {
+            return Response::HTTP_INTERNAL_SERVER_ERROR;
+        }
     }
 
-    public function getServices()
+    public function getServices(NodeInterface $node): array
     {
+        return $this->request($node, 'services');
     }
 
-    public function getServiceByType(string $type)
+    public function getServiceByType(NodeInterface $node, string $type): array
     {
-
+        return $this->request($node, sprintf('services/type/%s', $type));
     }
 
-    public function getClients(string $serviceId)
+    public function getClients(NodeInterface $node, string $serviceId): array
     {
-
+        return $this->request($node, sprintf('services/%s/clients', $serviceId));
     }
 
-    public function getStatistic(string $serviceId)
+    public function getStatistic(NodeInterface $node, string $serviceId): array
     {
-
+        return $this->request($node, sprintf('services/%s/statistic', $serviceId));
     }
 
-    public function getFiles(string $serviceId)
+    public function getFiles(NodeInterface $node, string $serviceId): array
     {
-
+        return $this->request($node, sprintf('%s/directories', $serviceId));
     }
 
-    public function Call(string $path)
+    public function call(EndpointInterface $endpoint): array
     {
+        try {
+            $node = $endpoint->getNode();
+            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/%s', $node->getHost(), $endpoint->getEndpoint()), [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'X-Syncdation-Key' => $node->getApiKey(),
+                ],
+            ]);
 
+            $endpoint->call();
+
+            if (Response::HTTP_OK !== $response->getStatusCode()) {
+                return [];
+            }
+
+            return json_decode($response->getContent(), true);
+        } catch (Throwable) {
+            return [];
+        }
     }
 
-    private function getApiRoot(string $host): string
+    private function request(NodeInterface $node, string $path): array
     {
-        return sprintf('%s/api', $host);
+        try {
+            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s%s/%s', $node->getHost(), $node->getPrefix(), $path), [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'X-Syncdation-Key' => $node->getApiKey(),
+                ],
+            ]);
+
+            if (Response::HTTP_OK !== $response->getStatusCode()) {
+                return [];
+            }
+
+            return json_decode($response->getContent(), true);
+        } catch (Throwable) {
+            return [];
+        }
     }
 }

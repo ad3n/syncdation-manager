@@ -44,6 +44,6 @@ final class Get extends AbstractController
             $audit = $this->audit->getAudits($node, $id, 1);
         }
 
-        return $this->renderAudit($audit, new ReflectionClass(Node::class));
+        return $this->renderDetail($audit, new ReflectionClass(Node::class));
     }
 }
