@@ -28,13 +28,20 @@ final class NodeService extends AbstractService implements ServiceInterface
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
 
-    public function ping(NodeInterface $node)
+    public function ping(NodeInterface $node): void
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/ping', $this->getApiRoot($node->getHost())));
+        $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/ping', $this->getApiRoot($node->getHost())), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Syncdation-Key' => $node->getApiKey(),
+            ],
+        ]);
         $node->setLastPing(new \DateTime());
         if ($response->getStatusCode() === Response::HTTP_OK) {
             if (!$node->getStatus()) {
-                $node->setDowntime((float)(new \DateTime())->getTimestamp() - $node->getLastDown()->getTimestamp());
+                if ($node->getLastDown()) {
+                    $node->setDowntime((float)(new \DateTime())->getTimestamp() - $node->getLastDown()->getTimestamp());
+                }
             }
 
             $node->setStatus(true);
@@ -49,9 +56,16 @@ final class NodeService extends AbstractService implements ServiceInterface
         $this->save($node);
     }
 
-    public function getEndpoints(NodeInterface $node)
+    public function getEndpoints(NodeInterface $node): array
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/endpoints', $this->getApiRoot($node->getHost())));
+        $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/endpoints', $this->getApiRoot($node->getHost())), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Syncdation-Key' => $node->getApiKey(),
+            ],
+        ]);
+
+        return json_decode($response->getContent(), true);
     }
 
     public function addEndpoint()

@@ -8,6 +8,7 @@ use KejawenLab\Application\Node\Model\NodeInterface;
 use KejawenLab\Application\Node\NodeService;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,9 +25,7 @@ final class Put extends AbstractController
     {
     }
 
-    /**
-    * @Route("/services/nodes/{id}/edit", name=Put::class, methods={"GET"}, priority=1)
-    */
+    #[Route(path: '/services/nodes/{id}/edit', name: Put::class, methods: ['GET'])]
     public function __invoke(Request $request, string $id): Response
     {
         $node = $this->service->get($id);
@@ -35,6 +34,8 @@ final class Put extends AbstractController
 
             return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
         }
+
+        $this->service->ping($node);
 
         $this->addFlash('id', $node->getId());
 

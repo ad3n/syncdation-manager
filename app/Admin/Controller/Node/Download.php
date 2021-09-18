@@ -23,9 +23,8 @@ final class Download extends AbstractController
     {
     }
 
-    /**
-     * @Route("/services/nodes/download", name=Download::class, methods={"GET"})
-     */
+
+    #[Route(path: '/services/nodes/download', name: Download::class, methods: ['GET'])]
     public function __invoke(): Response
     {
         $records = $this->service->total();

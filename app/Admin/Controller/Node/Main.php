@@ -27,9 +27,7 @@ final class Main extends AbstractController
         parent::__construct($this->service, $paginator);
     }
 
-    /**
-     * @Route("/services/nodes", name=Main::class, methods={"GET", "POST"})
-     */
+    #[Route(path: '/services/nodes', name: Main::class, methods: ['GET', 'POST'])]
     public function __invoke(Request $request): Response
     {
         $node = new Node();
