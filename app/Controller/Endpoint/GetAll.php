@@ -13,10 +13,13 @@ use KejawenLab\ApiSkeleton\Pagination\Paginator;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\EndpointService;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Permission(menu="ENDPOINT", actions={Permission::VIEW})
@@ -25,12 +28,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class GetAll extends AbstractFOSRestController
 {
-    public function __construct(private EndpointService $service, private Paginator $paginator)
+    public function __construct(private EndpointService $service, private NodeService $nodeService, private Paginator $paginator)
     {
     }
 
     /**
-     * @Rest\Get("/services/endpoints", name=GetAll::class)
+     * @Rest\Get("/services/nodes/{nodeId}/endpoints", name=GetAll::class)
      *
      * @OA\Tag(name="Endpoint")
      * @OA\Parameter(
@@ -66,14 +69,20 @@ final class GetAll extends AbstractFOSRestController
      * @Security(name="Bearer")
      *
      * @param Request $request
-     *
+     * @param string|null $nodeId
      * @return View
      *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request, ?string $nodeId = "-nodeId-"): View
     {
+        /** @var NodeInterface $node */
+        $node = $this->nodeService->get($nodeId);
+        if (null === $node) {
+            throw new NotFoundHttpException();
+        }
+
         return $this->view($this->paginator->paginate($this->service->getQueryBuilder(), $request, Endpoint::class));
     }
 }

@@ -10,7 +10,10 @@ use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Form\EndpointType;
 use KejawenLab\Application\Node\EndpointService;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\NodeService;
 use ReflectionClass;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,14 +25,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class Main extends AbstractController
 {
-    public function __construct(private EndpointService $service, Paginator $paginator)
+    public function __construct(private EndpointService $service, private NodeService $nodeService, Paginator $paginator)
     {
         parent::__construct($this->service, $paginator);
     }
 
-    #[Route(path: '/services/endpoints', name: Main::class, methods: ['GET', 'POST'])]
-    public function __invoke(Request $request): Response
+    #[Route(path: '/services/nodes/{nodeId}/endpoints', name: Main::class, methods: ['GET', 'POST'])]
+    public function __invoke(Request $request, string $nodeId = "-nodeId-"): Response
     {
+        /** @var NodeInterface $node */
+        $node = $this->nodeService->get($nodeId);
+        if (null === $node) {
+            $this->addFlash('error', 'sas.page.node.not_found');
+
+            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+        }
+
         $endpoint = new Endpoint();
         if ($request->isMethod(Request::METHOD_POST)) {
             $id = $request->getSession()->get('id');

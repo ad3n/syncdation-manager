@@ -11,9 +11,12 @@ use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\EndpointInterface;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -23,12 +26,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final class Get extends AbstractFOSRestController
 {
-    public function __construct(private EndpointService $service, private TranslatorInterface $translator)
+    public function __construct(private EndpointService $service, private NodeService $nodeService, private TranslatorInterface $translator)
     {
     }
 
     /**
-     * @Rest\Get("/services/endpoints/{id}", name=Get::class)
+     * @Rest\Get("/services/nodes/{nodeId}/endpoints/{id}", name=Get::class)
      *
      * @OA\Tag(name="Endpoint")
      * @OA\Response(
@@ -47,12 +50,19 @@ final class Get extends AbstractFOSRestController
      *
      * @Security(name="Bearer")
      *
+     * @param string $nodeId
      * @param string $id
      *
      * @return View
      */
-    public function __invoke(string $id): View
+    public function __invoke(string $nodeId, string $id): View
     {
+        /** @var NodeInterface $node */
+        $node = $this->nodeService->get($nodeId);
+        if (null === $node) {
+            throw new NotFoundHttpException();
+        }
+
         $endpoint = $this->service->get($id);
         if (!$endpoint instanceof EndpointInterface) {
             throw new NotFoundHttpException($this->translator->trans('sas.page.endpoint.not_found', [], 'pages'));

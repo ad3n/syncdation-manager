@@ -25,6 +25,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Main') }}" class="btn btn-outline-secondary">{{ 'sas.form.action.back' | trans({}, 'forms') }}</a>
+                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main', {'nodeId': data.id }) }}" class="btn btn-outline-primary ml-1">{{ 'sas.form.action.view_endpoint' | trans({}, 'forms') }}</a>
                     </div>
                 </div>
             </div>

@@ -60,6 +60,7 @@ sas:
             run: 'Jalankan'
             cron_logs: 'Riwayat Pekerjaan'
             api_request_logs: 'Riwayat Permintaan'
+            view_endpoint: 'Daftar Endpoint'
             api_key: 'Daftar Token API'
             permission: 'Hak Akses'
             add: 'Tambah'

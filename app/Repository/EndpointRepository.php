@@ -11,6 +11,7 @@ use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\Model\EndpointInterface;
 use KejawenLab\Application\Node\Model\EndpointRepositoryInterface;
+use KejawenLab\Application\Node\Model\NodeInterface;
 
 /**
  * @method Endpoint|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,9 +28,19 @@ final class EndpointRepository extends AbstractRepository implements EndpointRep
         parent::__construct($registry, Endpoint::class);
     }
 
-    public function findByPath(string $path): ?EndpointInterface
+    /**
+     * @param NodeInterface $node
+     *
+     * @return EndpointInterface[]
+     */
+    public function findByNode(NodeInterface $node): array
     {
-        return $this->findOneBy(['path' => $path]);
+        return $this->findBy(['node' => $node]);
+    }
+
+    public function findByNodeAndPath(NodeInterface $node, string $path): ?EndpointInterface
+    {
+        return $this->findOneBy(['node' => $node, 'path' => $path]);
     }
 
     /**

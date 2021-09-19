@@ -12,6 +12,8 @@ use KejawenLab\ApiSkeleton\Audit\AuditService;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\EndpointService;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -26,12 +28,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class Audit extends AbstractFOSRestController
 {
-    public function __construct(private EndpointService $service, private AuditService $audit, private Reader $reader)
-    {
+    public function __construct(
+        private EndpointService $service,
+        private NodeService $nodeService,
+        private AuditService $audit,
+        private Reader $reader,
+    ) {
     }
 
     /**
-     * @Rest\Get("/services/endpoints/{id}/audit", name=Audit::class, priority=-255)
+     * @Rest\Get("/services/nodes/{nodeId}/endpoints/{id}/audit", name=Audit::class, priority=-255)
      *
      * @Cache(expires="+17 minute", public=false)
      *
@@ -75,13 +81,20 @@ final class Audit extends AbstractFOSRestController
      *
      * @Security(name="Bearer")
      *
+     * @param string $nodeId
      * @param string $id
      *
      * @return View
      * @throws InvalidArgumentException
      */
-    public function __invoke(string $id): View
+    public function __invoke(string $nodeId, string $id): View
     {
+        /** @var NodeInterface $node */
+        $node = $this->nodeService->get($nodeId);
+        if (null === $node) {
+            throw new NotFoundHttpException();
+        }
+
         if (!$entity = $this->service->get($id)) {
             throw new NotFoundHttpException();
         }

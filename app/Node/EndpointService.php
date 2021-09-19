@@ -8,6 +8,7 @@ use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
 use KejawenLab\Application\Node\Model\EndpointInterface;
 use KejawenLab\Application\Node\Model\EndpointRepositoryInterface;
+use KejawenLab\Application\Node\Model\NodeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -70,9 +71,19 @@ final class EndpointService extends AbstractService implements ServiceInterface
         return true;
     }
 
-    public function getByPath(string $path): ?EndpointInterface
+    public function getByNodeAndPath(NodeInterface $node, string $path): ?EndpointInterface
     {
-        return $this->repository->findByPath($path);
+        return $this->repository->findByNodeAndPath($node, $path);
+    }
+
+    /**
+     * @param NodeInterface $node
+     *
+     * @return EndpointInterface[]
+     */
+    public function getByNode(NodeInterface $node): array
+    {
+        return $this->repository->findByNode($node);
     }
 
     public function call(EndpointInterface $endpoint, array $queries): array

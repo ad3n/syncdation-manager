@@ -32,22 +32,34 @@ final class NodeUpdateEndpointCommand extends Command
     {
         $nodes = $this->service->all();
         foreach ($nodes as $node) {
-            Coroutine::create(function () use ($node): void {
-                $endpoints = $this->service->getEndpoints($node);
-                foreach ($endpoints as $endpoint) {
-                    $entity = $this->endpointService->getByPath($endpoint['path']);
-                    if (null === $entity) {
-                        $entity = new Endpoint();
-                        $entity->setPath($endpoint['path']);
-                        $entity->setNode($node);
+            $endpoints = $this->endpointService->getByNode($node);
+            foreach ($endpoints as $endpoint) {
+                Coroutine::create(function () use ($node, $endpoint): void {
+                    $serverEndpoints = $this->service->getEndpoints($node);
+                    $exist = false;
+                    foreach ($serverEndpoints as $serverEndpoint) {
+                        if ($endpoint->getPath() === $serverEndpoint['path']) {
+                            $exist = true;
+                        }
+
+                        $entity = $this->endpointService->getByNodeAndPath($node, $serverEndpoint['path']);
+                        if (null === $entity) {
+                            $entity = new Endpoint();
+                            $entity->setPath($serverEndpoint['path']);
+                            $entity->setNode($node);
+                        }
+
+                        $entity->setSql($serverEndpoint['sql']);
+                        $entity->setDefaults($serverEndpoint['defaults']);
+
+                        $this->endpointService->save($entity);
                     }
 
-                    $entity->setSql($endpoint['sql']);
-                    $entity->setDefaults($endpoint['defaults']);
-
-                    $this->endpointService->save($entity);
-                }
-            });
+                    if (!$exist) {
+                        $this->endpointService->add($endpoint);
+                    }
+                });
+            }
         }
 
         return 0;

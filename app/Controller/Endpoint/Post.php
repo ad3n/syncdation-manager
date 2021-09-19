@@ -13,11 +13,14 @@ use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Form\EndpointType;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\EndpointInterface;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Permission(menu="ENDPOINT", actions={Permission::ADD})
@@ -26,12 +29,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class Post extends AbstractFOSRestController
 {
-    public function __construct(private FormFactory $formFactory, private EndpointService $service)
+    public function __construct(private FormFactory $formFactory, private EndpointService $service, private NodeService $nodeService)
     {
     }
 
     /**
-     * @Rest\Post("/services/endpoints", name=Post::class)
+     * @Rest\Post("/services/nodes/{nodeId}/endpoints", name=Post::class)
      *
      * @OA\Tag(name="Endpoint")
      * @OA\RequestBody(
@@ -57,11 +60,17 @@ final class Post extends AbstractFOSRestController
      * @Security(name="Bearer")
      *
      * @param Request $request
-     *
+     * @param string $nodeId
      * @return View
      */
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request, string $nodeId): View
     {
+        /** @var NodeInterface $node */
+        $node = $this->nodeService->get($nodeId);
+        if (null === $node) {
+            throw new NotFoundHttpException();
+        }
+
         $form = $this->formFactory->submitRequest(EndpointType::class, $request);
         if (!$form->isValid()) {
             return $this->view((array) $form->getErrors(), Response::HTTP_BAD_REQUEST);

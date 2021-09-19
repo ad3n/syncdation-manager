@@ -13,6 +13,8 @@ use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Form\EndpointType;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\EndpointInterface;
+use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -32,11 +34,12 @@ final class Put extends AbstractFOSRestController
         private FormFactory $formFactory,
         private EndpointService $service,
         private TranslatorInterface $translator,
+        private NodeService $nodeService,
     ) {
     }
 
     /**
-     * @Rest\Put("/services/endpoints/{id}", name=Put::class)
+     * @Rest\Put("/services/nodes/{nodeId}/endpoints/{id}", name=Put::class)
      *
      * @OA\Tag(name="Endpoint")
      * @OA\RequestBody(
@@ -62,12 +65,19 @@ final class Put extends AbstractFOSRestController
      * @Security(name="Bearer")
      *
      * @param Request $request
+     * @param string $nodeId
      * @param string $id
      *
      * @return View
      */
-    public function __invoke(Request $request, string $id): View
+    public function __invoke(Request $request, string $nodeId, string $id): View
     {
+        /** @var NodeInterface $node */
+        $node = $this->nodeService->get($nodeId);
+        if (null === $node) {
+            throw new NotFoundHttpException();
+        }
+
         $endpoint = $this->service->get($id);
         if (!$endpoint instanceof EndpointInterface) {
             throw new NotFoundHttpException($this->translator->trans('sas.page.endpoint.not_found', [], 'pages'));
