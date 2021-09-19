@@ -99,7 +99,7 @@ class Node implements NodeInterface
      *
      * @Groups({"read"})
      */
-    private ?\DateTime $startAt;
+    private ?\DateTimeImmutable $startAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -197,12 +197,12 @@ class Node implements NodeInterface
         $this->apiKey = $apiKey;
     }
 
-    public function getStartAt(): ?\DateTime
+    public function getStartAt(): ?\DateTimeImmutable
     {
         return $this->startAt;
     }
 
-    public function setStartAt(\DateTime $startAt): void
+    public function setStartAt(\DateTimeImmutable $startAt): void
     {
         $this->startAt = $startAt;
     }

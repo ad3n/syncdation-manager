@@ -11,4 +11,5 @@ use KejawenLab\ApiSkeleton\Pagination\Model\PaginatableRepositoryInterface;
  */
 interface NodeRepositoryInterface extends PaginatableRepositoryInterface
 {
+    public function countUptime(): float;
 }

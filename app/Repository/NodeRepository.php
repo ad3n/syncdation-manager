@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\Application\Entity\Node;
 use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
-use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 
 /**
  * @method Node|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,5 +22,28 @@ final class NodeRepository extends AbstractRepository implements NodeRepositoryI
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Node::class);
+    }
+
+    public function countUptime(): float
+    {
+        $today = new \DateTime();
+
+        $nodes = $this->findAll();
+        $uptime = 0;
+        $downtime = 0;
+        foreach ($nodes as $node) {
+            if (null === $node->getStartAt()) {
+                continue;
+            }
+
+            $uptime += $today->getTimestamp() - $node->getStartAt()->getTimestamp();
+            $downtime += $node->getDowntime();
+        }
+
+        if (0 === $uptime) {
+            return 0;
+        }
+
+        return (($uptime - $downtime) / $uptime) * 100;
     }
 }

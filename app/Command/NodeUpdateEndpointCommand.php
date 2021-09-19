@@ -35,7 +35,7 @@ final class NodeUpdateEndpointCommand extends Command
             Coroutine::create(function () use ($node): void {
                 $endpoints = $this->service->getEndpoints($node);
                 foreach ($endpoints as $endpoint) {
-                    $entity = $this->endpointService->get($endpoint['path']);
+                    $entity = $this->endpointService->getByPath($endpoint['path']);
                     if (null === $entity) {
                         $entity = new Endpoint();
                         $entity->setPath($endpoint['path']);

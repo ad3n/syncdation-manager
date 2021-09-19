@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace KejawenLab\Application\Controller\Node;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use KejawenLab\Application\Entity\Node;
-use KejawenLab\Application\Node\NodeService;
 use KejawenLab\ApiSkeleton\Pagination\Paginator;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Entity\Node;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -66,6 +68,9 @@ final class GetAll extends AbstractFOSRestController
      * @param Request $request
      *
      * @return View
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function __invoke(Request $request): View
     {

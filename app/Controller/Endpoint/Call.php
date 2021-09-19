@@ -4,31 +4,30 @@ declare(strict_types=1);
 
 namespace KejawenLab\Application\Controller\Endpoint;
 
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\EndpointInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Permission(menu="ENDPOINT", actions={Permission::VIEW})
  *
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
  */
-final class Get extends AbstractFOSRestController
+final class Call extends AbstractController
 {
-    public function __construct(private EndpointService $service, private TranslatorInterface $translator)
+    public function __construct(private EndpointService $service)
     {
     }
 
     /**
-     * @Rest\Get("/services/endpoints/{id}", name=Get::class)
+     * @Rest\Get("/services/endpoints/call/{path}", name=Call::class, requirements={"path"=".+"})
      *
      * @OA\Tag(name="Endpoint")
      * @OA\Response(
@@ -38,8 +37,7 @@ final class Get extends AbstractFOSRestController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 type="object",
-     *                 ref=@Model(type=Endpoint::class, groups={"read"})
+     *                 type="object"
      *             )
      *         )
      *     }
@@ -47,17 +45,19 @@ final class Get extends AbstractFOSRestController
      *
      * @Security(name="Bearer")
      *
-     * @param string $id
+     * @param Request $request
      *
-     * @return View
+     * @param string $path
+     *
+     * @return Response
      */
-    public function __invoke(string $id): View
+    public function __invoke(Request $request, string $path): Response
     {
-        $endpoint = $this->service->get($id);
+        $endpoint = $this->service->getByPath(sprintf('/%s', $path));
         if (!$endpoint instanceof EndpointInterface) {
-            throw new NotFoundHttpException($this->translator->trans('sas.page.endpoint.not_found', [], 'pages'));
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        return $this->view($endpoint);
+        return new JsonResponse($this->service->call($endpoint, $request->query->all()));
     }
 }

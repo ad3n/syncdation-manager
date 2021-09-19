@@ -12,4 +12,6 @@ use KejawenLab\ApiSkeleton\Pagination\Model\PaginatableRepositoryInterface;
 interface EndpointRepositoryInterface extends PaginatableRepositoryInterface
 {
     public function findByPath(string $path): ?EndpointInterface;
+
+    public function countRequest(): int;
 }

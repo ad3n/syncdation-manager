@@ -6,10 +6,10 @@ namespace KejawenLab\Application\Admin\Controller\Endpoint;
 
 use DH\Auditor\Provider\Doctrine\Persistence\Reader\Reader;
 use KejawenLab\ApiSkeleton\Admin\Controller\AbstractController;
-use KejawenLab\Application\Entity\Endpoint;
-use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\ApiSkeleton\Audit\AuditService;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Entity\Endpoint;
+use KejawenLab\Application\Node\EndpointService;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace KejawenLab\Application\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\Application\Entity\Endpoint;
@@ -28,5 +30,19 @@ final class EndpointRepository extends AbstractRepository implements EndpointRep
     public function findByPath(string $path): ?EndpointInterface
     {
         return $this->findOneBy(['path' => $path]);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countRequest(): int
+    {
+        $queryBuilder = $this->queryBuilder('o');
+        $queryBuilder->select('SUM(o.totalCall) AS total');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getSingleScalarResult();
     }
 }

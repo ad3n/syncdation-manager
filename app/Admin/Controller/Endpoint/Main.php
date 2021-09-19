@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Admin\Controller\Endpoint;
 
 use KejawenLab\ApiSkeleton\Admin\Controller\AbstractController;
+use KejawenLab\ApiSkeleton\Pagination\Paginator;
+use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Form\EndpointType;
 use KejawenLab\Application\Node\EndpointService;
-use KejawenLab\ApiSkeleton\Pagination\Paginator;
-use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

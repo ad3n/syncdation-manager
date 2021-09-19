@@ -21,9 +21,9 @@ interface NodeInterface extends EntityInterface
 
     public function getApiKey(): ?string;
 
-    public function getStartAt(): ?\DateTime;
+    public function getStartAt(): ?\DateTimeImmutable;
 
-    public function setStartAt(\DateTime $startAt): void;
+    public function setStartAt(\DateTimeImmutable $startAt): void;
 
     public function getLastPing(): ?\DateTime;
 

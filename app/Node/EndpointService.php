@@ -29,6 +29,11 @@ final class EndpointService extends AbstractService implements ServiceInterface
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
 
+    public function totalRequest(): int
+    {
+        return $this->repository->countRequest();
+    }
+
     public function delete(EndpointInterface $endpoint): bool
     {
         $statusCode = $this->request($endpoint, Request::METHOD_DELETE);
@@ -70,7 +75,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
         return $this->repository->findByPath($path);
     }
 
-    public function call(EndpointInterface $endpoint): array
+    public function call(EndpointInterface $endpoint, array $queries): array
     {
         try {
             $node = $endpoint->getNode();
@@ -79,9 +84,12 @@ final class EndpointService extends AbstractService implements ServiceInterface
                     'Content-Type' => 'application/json',
                     'X-Syncdation-Key' => $node->getApiKey(),
                 ],
+                'query' => $queries,
             ]);
 
             $endpoint->call();
+
+            $this->save($endpoint);
 
             if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return [];

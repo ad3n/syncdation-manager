@@ -8,14 +8,15 @@ use DH\Auditor\Provider\Doctrine\Persistence\Reader\Reader;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use KejawenLab\Application\Entity\Node;
-use KejawenLab\Application\Node\NodeService;
 use KejawenLab\ApiSkeleton\Audit\AuditService;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Entity\Node;
+use KejawenLab\Application\Node\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use OpenApi\Annotations as OA;
+use Psr\Cache\InvalidArgumentException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -30,7 +31,7 @@ final class Audit extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/nodes/{id}/audit", name=Audit::class, priority=-255)
+     * @Rest\Get("services/nodes/{id}/audit", name=Audit::class, priority=-255)
      *
      * @Cache(expires="+17 minute", public=false)
      *
@@ -74,11 +75,11 @@ final class Audit extends AbstractFOSRestController
      *
      * @Security(name="Bearer")
      *
-     * @param Request $request
-     *
      * @param string $id
      *
      * @return View
+     *
+     * @throws InvalidArgumentException
      */
     public function __invoke(string $id): View
     {

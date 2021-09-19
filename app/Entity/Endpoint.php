@@ -77,6 +77,8 @@ class Endpoint implements EndpointInterface
      * @ORM\Column(type="json")
      *
      * @Groups({"read"})
+     *
+     * @OA\Property(type="string[]")
      */
     private array $defaults;
 

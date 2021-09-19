@@ -7,12 +7,12 @@ namespace KejawenLab\Application\Controller\Endpoint;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use KejawenLab\Application\Entity\Endpoint;
-use KejawenLab\Application\Form\EndpointType;
-use KejawenLab\Application\Node\Model\EndpointInterface;
-use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\ApiSkeleton\Form\FormFactory;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Entity\Endpoint;
+use KejawenLab\Application\Form\EndpointType;
+use KejawenLab\Application\Node\EndpointService;
+use KejawenLab\Application\Node\Model\EndpointInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -36,7 +36,7 @@ final class Put extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Put("/endpoints/{id}", name=Put::class)
+     * @Rest\Put("/services/endpoints/{id}", name=Put::class)
      *
      * @OA\Tag(name="Endpoint")
      * @OA\RequestBody(

@@ -30,6 +30,11 @@ final class NodeService extends AbstractService implements ServiceInterface
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
 
+    public function calculateUptime(): float
+    {
+        return $this->repository->countUptime();
+    }
+
     public function ping(NodeInterface $node): void
     {
         try {
@@ -43,8 +48,12 @@ final class NodeService extends AbstractService implements ServiceInterface
             if (Response::HTTP_OK === $response->getStatusCode()) {
                 if (!$node->getStatus()) {
                     if ($node->getLastDown()) {
-                        $node->setDowntime((float)(new \DateTime())->getTimestamp() - $node->getLastDown()->getTimestamp());
+                        $node->setDowntime((new \DateTime())->getTimestamp() - $node->getLastDown()->getTimestamp());
                     }
+                }
+
+                if (null === $node->getStartAt()) {
+                    $node->setStartAt(new \DateTimeImmutable());
                 }
 
                 $node->setStatus(true);
