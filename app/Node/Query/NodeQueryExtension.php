@@ -22,11 +22,8 @@ final class NodeQueryExtension extends AbstractQueryExtension
             return;
         }
 
-        /**
-         * Uncomment to implement your own search logic
-         *
-         * $queryBuilder->andWhere($queryBuilder->expr()->like(sprintf('UPPER(%s.name)', $this->aliasHelper->findAlias('root')), $queryBuilder->expr()->literal(sprintf('%%%s%%', StringUtil::uppercase($query)))));
-         */
+        $queryBuilder->andWhere($queryBuilder->expr()->like(sprintf('UPPER(%s.code)', $this->aliasHelper->findAlias('root')), $queryBuilder->expr()->literal(sprintf('%%%s%%', StringUtil::uppercase($query)))));
+        $queryBuilder->andWhere($queryBuilder->expr()->like(sprintf('UPPER(%s.name)', $this->aliasHelper->findAlias('root')), $queryBuilder->expr()->literal(sprintf('%%%s%%', StringUtil::uppercase($query)))));
     }
 
     public function support(string $class, Request $request): bool

@@ -13,7 +13,11 @@ interface EndpointInterface extends EntityInterface
 {
     public function getNode(): ?NodeInterface;
 
-    public function getEndpoint(): ?string;
+    public function getPath(): ?string;
+
+    public function getSQL(): ?string;
+
+    public function getDefaults(): array;
 
     public function getTotalCall(): int;
 

@@ -67,30 +67,6 @@ final class NodeService extends AbstractService implements ServiceInterface
         return $this->request($node, 'endpoints');
     }
 
-    public function addEndpoint(NodeInterface $node, string $path, string $sqlQuery): int
-    {
-        try {
-            $response = $this->httpClient->request(
-                Request::METHOD_POST,
-                sprintf('%s%s/endpoints', $node->getHost(), $node->getPrefix()),
-                [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'X-Syncdation-Key' => $node->getApiKey(),
-                    ],
-                    'json' => [
-                        'path' => $path,
-                        'sql' => $sqlQuery,
-                    ]
-                ]
-            );
-
-            return $response->getStatusCode();
-        } catch (TransportExceptionInterface) {
-            return Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
-    }
-
     public function getServices(NodeInterface $node): array
     {
         return $this->request($node, 'services');
@@ -114,29 +90,6 @@ final class NodeService extends AbstractService implements ServiceInterface
     public function getFiles(NodeInterface $node, string $serviceId): array
     {
         return $this->request($node, sprintf('%s/directories', $serviceId));
-    }
-
-    public function call(EndpointInterface $endpoint): array
-    {
-        try {
-            $node = $endpoint->getNode();
-            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/%s', $node->getHost(), $endpoint->getEndpoint()), [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'X-Syncdation-Key' => $node->getApiKey(),
-                ],
-            ]);
-
-            $endpoint->call();
-
-            if (Response::HTTP_OK !== $response->getStatusCode()) {
-                return [];
-            }
-
-            return json_decode($response->getContent(), true);
-        } catch (Throwable) {
-            return [];
-        }
     }
 
     private function request(NodeInterface $node, string $path): array
