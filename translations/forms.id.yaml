@@ -49,6 +49,11 @@ sas:
                 host: 'Host'
                 prefix: 'Prefix'
                 apiKey: 'Api Key'
+            endpoint:
+                node: 'Node'
+                path: 'URI Path'
+                sql: 'SQL Query'
+                defaults: 'Default Value'
             api_client:
                 name: 'Nama'
         action:

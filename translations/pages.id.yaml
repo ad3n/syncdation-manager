@@ -93,6 +93,14 @@ sas:
             add: 'Tambah Node'
             edit: 'Ubah Node'
             view: 'Detil Node'
+        endpoint:
+            saved: 'Endpoint berhasil disimpan'
+            deleted: 'Endpoint berhasil dihapus'
+            not_found: 'Endpoint tidak ditemukan'
+            list: 'Daftar Endpoint'
+            add: 'Tambah Endpoint'
+            edit: 'Ubah Endpoint'
+            view: 'Detil Endpoint'
         cron_report:
             list: 'Riwayat Pekerjaan Terjadwal'
             success: 'Sukses'

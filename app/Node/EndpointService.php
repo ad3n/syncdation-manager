@@ -7,7 +7,7 @@ use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
 use KejawenLab\Application\Node\Model\EndpointInterface;
-use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
+use KejawenLab\Application\Node\Model\EndpointRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,7 +22,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
 {
     public function __construct(
         MessageBusInterface $messageBus,
-        NodeRepositoryInterface $repository,
+        EndpointRepositoryInterface $repository,
         AliasHelper $aliasHelper,
         private HttpClientInterface $httpClient
     ) {
@@ -65,6 +65,11 @@ final class EndpointService extends AbstractService implements ServiceInterface
         return true;
     }
 
+    public function getByPath(string $path): ?EndpointInterface
+    {
+        return $this->repository->findByPath($path);
+    }
+
     public function call(EndpointInterface $endpoint): array
     {
         try {
@@ -103,7 +108,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
                     'json' => [
                         'path' => $endpoint->getPath(),
                         'sql' => $endpoint->getSQL(),
-                        'defaults' => $endpoint->getDefaults(),
+                        'defaults' => $endpoint->getDefaults()?: null,
                     ]
                 ]
             );

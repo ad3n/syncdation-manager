@@ -7,7 +7,6 @@ namespace KejawenLab\Application\Node;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
-use KejawenLab\Application\Node\Model\EndpointInterface;
 use KejawenLab\Application\Node\Model\NodeInterface;
 use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,7 +105,12 @@ final class NodeService extends AbstractService implements ServiceInterface
                 return [];
             }
 
-            return json_decode($response->getContent(), true);
+            $result = json_decode($response->getContent(), true);
+            if (array_key_exists('data', $result)) {
+                return $result['data'];
+            }
+
+            return $result;
         } catch (Throwable) {
             return [];
         }

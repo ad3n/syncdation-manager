@@ -79,6 +79,12 @@ sas:
                 host: 'Host'
                 prefix: 'Prefix'
                 apiKey: 'Api Key'
+            endpoint:
+                node: 'Node'
+                path: 'URI Path'
+                sql: 'SQL Query'
+                defaults: 'Nilai Default'
+                totalCall: 'Total Permintaan'
             apiclientrequest:
                 apiClient: 'Api Client'
                 path: 'URL'
