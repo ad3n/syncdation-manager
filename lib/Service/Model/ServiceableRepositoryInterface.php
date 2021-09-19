@@ -9,8 +9,6 @@ namespace KejawenLab\ApiSkeleton\Service\Model;
  */
 interface ServiceableRepositoryInterface
 {
-    public function findAll(): iterable;
-
     public function countRecords(): int;
 
     public function persist(object $object): void;
