@@ -9,6 +9,7 @@ use KejawenLab\ApiSkeleton\Admin\Controller\AbstractController;
 use KejawenLab\ApiSkeleton\Audit\Audit as Record;
 use KejawenLab\ApiSkeleton\Audit\AuditService;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\EndpointInterface;
@@ -40,14 +41,14 @@ final class Get extends AbstractController
         if (null === $node) {
             $this->addFlash('error', 'sas.page.node.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(NodeMain::class));
         }
 
         $endpoint = $this->service->get($id);
         if (!$endpoint instanceof EndpointInterface) {
             $this->addFlash('error', 'sas.page.endpoint.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(Main::class, array_merge($request->query->all(), ['nodeId' => $nodeId])));
         }
 
         $audit = new Record($endpoint);

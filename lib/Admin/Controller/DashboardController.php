@@ -23,13 +23,11 @@ final class DashboardController extends Base
     #[Route(path: '/', name: AdminContext::ADMIN_ROUTE, methods: ['GET'])]
     public function __invoke(): Response
     {
-
-
         return $this->render('dashboard/layout.html.twig', [
             'page_title' => 'sas.page.dashboard',
             'node' => $this->nodeService->total(),
+            'service' => $this->nodeService->totalService(),
             'endpoint' => $this->endpointService->total(),
-            'request' => $this->endpointService->totalRequest(),
             'uptime' => $this->nodeService->calculateUptime(),
         ]);
     }

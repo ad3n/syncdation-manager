@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 
 /**
  * @Permission(menu="ENDPOINT", actions={Permission::VIEW})
@@ -38,7 +39,7 @@ final class Main extends AbstractController
         if (null === $node) {
             $this->addFlash('error', 'sas.page.node.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(NodeMain::class));
         }
 
         $endpoint = new Endpoint();

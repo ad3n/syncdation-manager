@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Permission(menu="NODE", actions={Permission::EDIT})
  *
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
-*/
-final class Put extends AbstractController
+ */
+final class Ping extends AbstractController
 {
     public function __construct(private NodeService $service)
     {
     }
 
-    #[Route(path: '/services/nodes/{id}/edit', name: Put::class, methods: ['GET'])]
+    #[Route(path: '/services/nodes/{id}/ping', name: Ping::class, methods: ['GET'])]
     public function __invoke(Request $request, string $id): Response
     {
         $node = $this->service->get($id);
@@ -34,8 +34,12 @@ final class Put extends AbstractController
             return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
         }
 
-        $this->addFlash('id', $node->getId());
+        if ($this->service->ping($node)) {
+            $this->addFlash('info', 'sas.page.node.ping_success');
+        } else {
+            $this->addFlash('error', 'sas.page.node.ping_failed');
+        }
 
-        return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+        return new RedirectResponse($this->generateUrl(Get::class, ['id' => $node->getId()]));
     }
 }

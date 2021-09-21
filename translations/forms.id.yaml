@@ -58,6 +58,7 @@ sas:
                 name: 'Nama'
         action:
             run: 'Jalankan'
+            ping: 'Ping'
             cron_logs: 'Riwayat Pekerjaan'
             api_request_logs: 'Riwayat Permintaan'
             view_endpoint: 'Daftar Endpoint'

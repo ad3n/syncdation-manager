@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Admin\Controller\Endpoint;
 
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\EndpointInterface;
 use KejawenLab\Application\Node\Model\NodeInterface;
@@ -34,20 +35,20 @@ final class Delete extends AbstractController
         if (null === $node) {
             $this->addFlash('error', 'sas.page.node.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(NodeMain::class));
         }
 
         $endpoint = $this->service->get($id);
         if (!$endpoint instanceof EndpointInterface) {
             $this->addFlash('error', 'sas.page.endpoint.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(Main::class, array_merge($request->query->all(), ['nodeId' => $nodeId])));
         }
 
         $this->service->delete($endpoint);
 
         $this->addFlash('info', 'sas.page.endpoint.deleted');
 
-        return new RedirectResponse($this->generateUrl(Main::class));
+        return new RedirectResponse($this->generateUrl(Main::class, array_merge($request->query->all(), ['nodeId' => $nodeId])));
     }
 }

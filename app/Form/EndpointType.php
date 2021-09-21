@@ -6,9 +6,12 @@ namespace KejawenLab\Application\Form;
 
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
 use KejawenLab\Application\Entity\Endpoint;
+use KejawenLab\Application\Node\Model\EndpointInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -58,6 +61,24 @@ final class EndpointType extends AbstractType
                 return json_decode($defaults, true);
             }
         ));
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $endpoint = $event->getData();
+            $form = $event->getForm();
+
+            if ($endpoint instanceof EndpointInterface) {
+                if (null !== $endpoint->getPath()) {
+                    $form->remove('path');
+                    $form->add('path', null, [
+                        'required' => true,
+                        'label' => 'sas.form.field.endpoint.path',
+                        'attr' => [
+                            'readonly' => true,
+                        ]
+                    ]);
+                }
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

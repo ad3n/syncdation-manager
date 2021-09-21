@@ -81,7 +81,7 @@
         {% if is_granted('add', menu) %}
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="card">
-                <form role="form" method="post" action="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main') }}" enctype="multipart/form-data">
+                <form role="form" method="post" action="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main', {nodeId: nodeId}) }}" enctype="multipart/form-data">
                     <div class="card-body">
                         {{ form_widget(form) }}
                     </div>

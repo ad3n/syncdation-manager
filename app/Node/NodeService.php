@@ -35,7 +35,18 @@ final class NodeService extends AbstractService implements ServiceInterface
         return $this->repository->countUptime();
     }
 
-    public function ping(NodeInterface $node): void
+    public function totalService(): int
+    {
+        $total = 0;
+        $nodes = $this->all();
+        foreach ($nodes as $node) {
+            $total += count($this->getServices($node));
+        }
+
+        return $total;
+    }
+
+    public function ping(NodeInterface $node): bool
     {
         try {
             $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s%s/ping', $node->getHost(), $node->getPrefix()), [
@@ -67,7 +78,15 @@ final class NodeService extends AbstractService implements ServiceInterface
 
             $this->save($node);
         } catch (TransportExceptionInterface) {
+            return false;
         }
+
+        return true;
+    }
+
+    public function getInfo(NodeInterface $node): array
+    {
+        return $this->request($node, 'info');
     }
 
     public function getEndpoints(NodeInterface $node): array

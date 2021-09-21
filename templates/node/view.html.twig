@@ -1,6 +1,7 @@
 {% extends 'layout/main.html.twig' %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/json-viewer/json-viewer.min.css') }}">
 {% endblock %}
 {% block content %}
@@ -21,11 +22,47 @@
                                     </li>
                                 {% endif %}
                             {% endfor %}
+                            {% set info = node_info(data) %}
+                            {% if info is not empty %}
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_name') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["name"] }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_email') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["email"] }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_company') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["company"] }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_issued_by') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["issued_by"] }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_valid_until') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["valid_until"] | date('Y-m-d H:i:s', 'Asia/Jakarta') }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_last_used') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["activate_at"] | date('Y-m-d H:i:s', 'Asia/Jakarta') }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_max_node') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["max_node"] }}</a>
+                                </li>
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.license_max_service') | trans({}, 'tables') }}
+                                    <a class="float-right">{{ info["max_service"] }}</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                     <div class="card-footer">
                         <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Main') }}" class="btn btn-outline-secondary">{{ 'sas.form.action.back' | trans({}, 'forms') }}</a>
                         <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main', {'nodeId': data.id }) }}" class="btn btn-outline-primary ml-1">{{ 'sas.form.action.view_endpoint' | trans({}, 'forms') }}</a>
+                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Ping', {'id': data.id }) }}" class="btn btn-outline-danger ml-1">{{ 'sas.form.action.ping' | trans({}, 'forms') }}</a>
                     </div>
                 </div>
             </div>
@@ -58,9 +95,46 @@
             </div>
             {% endif %}
         </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <h4>{{ 'sas.page.node.services' | trans({}, 'pages') }}</h4>
+                    </div>
+                    <div class="card-body p-1">
+                        <div class="row">
+                            {% set services = node_services(data) %}
+                            {% for service in services %}
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mt-1">
+                                        <div class="card-body p-0">
+                                            <ul class="list-group p-0">
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_name' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service['name'] }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_type' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service['type'] }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_port' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service['port'] }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endapply %}
 {% endblock %}
 {% block javascripts %}
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('plugins/json-viewer/json-viewer.min.js') }}"></script>
     <script>
         $(document).ready(function () {
@@ -68,6 +142,13 @@
                 let me = $(this);
                 me.jsonViewer(me.data('json'), {collapsed: true, withQuotes: true, withLinks: false});
             });
+
+            {% for message in app.flashes('info') %}
+            toastr['success']('{{ message | trans({}, 'pages') }}');
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+            toastr['error']('{{ message | trans({}, 'pages') }}');
+            {% endfor %}
         });
     </script>
 {% endblock %}

@@ -8,6 +8,7 @@ use DH\Auditor\Provider\Doctrine\Persistence\Reader\Reader;
 use KejawenLab\ApiSkeleton\Admin\Controller\AbstractController;
 use KejawenLab\ApiSkeleton\Audit\AuditService;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\NodeInterface;
@@ -42,19 +43,19 @@ final class Audit extends AbstractController
         if (null === $node) {
             $this->addFlash('error', 'sas.page.node.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(NodeMain::class));
         }
 
         if (!$entity = $this->service->get($id)) {
             $this->addFlash('error', 'sas.page.endpoint.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class));
+            return new RedirectResponse($this->generateUrl(Main::class, array_merge($request->query->all(), ['nodeId' => $nodeId])));
         }
 
         if (!$this->reader->getProvider()->isAuditable(Endpoint::class)) {
             $this->addFlash('error', 'sas.page.audit.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class));
+            return new RedirectResponse($this->generateUrl(Main::class, array_merge($request->query->all(), ['nodeId' => $nodeId])));
         }
 
         return $this->renderAudit($this->audit->getAudits($entity, $id), new ReflectionClass(Endpoint::class));

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Admin\Controller\Endpoint;
 
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
+use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 use KejawenLab\Application\Node\EndpointService;
 use KejawenLab\Application\Node\Model\NodeInterface;
 use KejawenLab\Application\Node\NodeService;
@@ -34,14 +35,14 @@ final class Download extends AbstractController
         if (null === $node) {
             $this->addFlash('error', 'sas.page.node.not_found');
 
-            return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
+            return new RedirectResponse($this->generateUrl(NodeMain::class));
         }
 
         $records = $this->service->total();
         if (10000 < $records) {
             $this->addFlash('error', 'sas.page.error.too_many_records');
 
-            return new RedirectResponse($this->generateUrl(Main::class));
+            return new RedirectResponse($this->generateUrl(Main::class, array_merge($request->query->all(), ['nodeId' => $nodeId])));
         }
 
         $response = new Response();

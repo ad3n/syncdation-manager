@@ -89,10 +89,13 @@ sas:
             saved: 'Node berhasil disimpan'
             deleted: 'Node berhasil dihapus'
             not_found: 'Node tidak ditemukan'
+            ping_success: 'Ping sukses'
+            ping_failed: 'Ping gagal'
             list: 'Daftar Node'
             add: 'Tambah Node'
             edit: 'Ubah Node'
             view: 'Detil Node'
+            services: 'Daftar Servis'
         endpoint:
             saved: 'Endpoint berhasil disimpan'
             deleted: 'Endpoint berhasil dihapus'
