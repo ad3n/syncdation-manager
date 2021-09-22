@@ -70,11 +70,39 @@ class Service
     private ?string $type;
 
     /**
-     * @ORM\Column(type="smallint", length=4)
+     * @ORM\Column(type="smallint")
      *
      * @Groups({"read"})
      */
     private int $port;
+
+    /**
+     * @ORM\Column(type="bigint")
+     *
+     * @Groups({"read"})
+     */
+    private int $successed;
+
+    /**
+     * @ORM\Column(type="bigint")
+     *
+     * @Groups({"read"})
+     */
+    private int $failed;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $description;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $uptime;
 
     public function __construct()
     {
@@ -84,6 +112,10 @@ class Service
         $this->name = null;
         $this->type = null;
         $this->port = 0;
+        $this->successed = 0;
+        $this->failed = 0;
+        $this->description = null;
+        $this->uptime = null;
     }
 
     public function getId(): string
@@ -143,5 +175,45 @@ class Service
     public function setPort(int $port): void
     {
         $this->port = $port;
+    }
+
+    public function getSuccessed(): int
+    {
+        return $this->successed;
+    }
+
+    public function setSuccessed(int $successed): void
+    {
+        $this->successed = $successed;
+    }
+
+    public function getFailed(): int
+    {
+        return $this->failed;
+    }
+
+    public function setFailed(int $failed): void
+    {
+        $this->failed = $failed;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getUptime(): ?string
+    {
+        return $this->uptime;
+    }
+
+    public function setUptime(?string $uptime): void
+    {
+        $this->uptime = $uptime;
     }
 }

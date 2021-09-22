@@ -93,6 +93,10 @@ final class NodeService extends AbstractService implements ServiceInterface
                 $data->setType($service['type']);
                 $data->setName($service['name']);
                 $data->setPort((int) $service['port']);
+                $data->setSuccessed($service['statistic']['successed']);
+                $data->setFailed($service['statistic']['failed']);
+                $data->setDescription($service['statistic']['description']);
+                $data->setUptime($service['statistic']['uptime']);
 
                 $this->serviceRepository->persist($data);
             }

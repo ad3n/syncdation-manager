@@ -110,16 +110,32 @@
                                         <div class="card-body p-0">
                                             <ul class="list-group p-0">
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_name' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service.name }}</a>
-                                                </li>
-                                                <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.node.service_type' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.type | upper }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.node.service_port' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.port }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_name' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.name }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_uptime' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.uptime }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_successed' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.successed }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_failed' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.failed }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.node.service_description' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.description }}</a>
                                                 </li>
                                             </ul>
                                         </div>
