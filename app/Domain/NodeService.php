@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Node;
+namespace KejawenLab\Application\Domain;
 
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
 use KejawenLab\Application\Entity\Service;
-use KejawenLab\Application\Node\Model\NodeInterface;
-use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\NodeRepositoryInterface;
 use KejawenLab\Application\Repository\ServiceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +38,16 @@ final class NodeService extends AbstractService implements ServiceInterface
         return $this->repository->countUptime();
     }
 
+    public function persist(NodeInterface $node): void
+    {
+        $this->repository->persist($node);
+    }
+
+    public function commit(): void
+    {
+        $this->repository->commit();
+    }
+
     public function totalService(): int
     {
         $total = 0;
@@ -52,7 +62,7 @@ final class NodeService extends AbstractService implements ServiceInterface
     public function ping(NodeInterface $node): bool
     {
         try {
-            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s%s/ping', $node->getHost(), $node->getPrefix()), [
+            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/api/ping', $node->getHost()), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'X-Syncdation-Key' => $node->getApiKey(),
@@ -155,7 +165,7 @@ final class NodeService extends AbstractService implements ServiceInterface
     private function request(NodeInterface $node, string $path): array
     {
         try {
-            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s%s/%s', $node->getHost(), $node->getPrefix(), $path), [
+            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/api/%s', $node->getHost(), $path), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'X-Syncdation-Key' => $node->getApiKey(),

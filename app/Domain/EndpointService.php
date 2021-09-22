@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Node;
+namespace KejawenLab\Application\Domain;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
-use KejawenLab\Application\Node\Model\EndpointInterface;
-use KejawenLab\Application\Node\Model\EndpointRepositoryInterface;
-use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\EndpointInterface;
+use KejawenLab\Application\Domain\Model\EndpointRepositoryInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -90,7 +90,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
     {
         try {
             $node = $endpoint->getNode();
-            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s%s/exposes%s', $node->getHost(), $node->getPrefix(), $endpoint->getPath()), [
+            $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/api/exposes%s', $node->getHost(), $endpoint->getPath()), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'X-Syncdation-Key' => $node->getApiKey(),
@@ -118,7 +118,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
             $node = $endpoint->getNode();
             $response = $this->httpClient->request(
                 $method,
-                sprintf('%s%s/endpoints', $node->getHost(), $node->getPrefix()),
+                sprintf('%s/api/endpoints', $node->getHost()),
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',

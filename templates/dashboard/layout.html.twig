@@ -1,52 +1,102 @@
 {% extends 'layout/main.html.twig' %}
 
-{% block stylesheets %}{% endblock %}
-{% block content %}
-<div class="row">
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>{{ node | number_format(0, ',', '.') }}</h3>
-                <p>Node</p>
-            </div>
-            <div class="icon">
-                <i class="cib-joomla"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>{{ service | number_format(0, ',', '.') }}</h3>
-                <p>Servis</p>
-            </div>
-            <div class="icon">
-                <i class="cil-room"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>{{ endpoint | number_format(0, ',', '.') }}</h3>
-                <p>Endpoint</p>
-            </div>
-            <div class="icon">
-                <i class="cil-sync"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>{{ uptime | number_format(2, ',', '.') }}<sup style="font-size: 20px;">%</sup></h3>
-                <p>Uptime</p>
-            </div>
-            <div class="icon">
-                <i class="cib-adguard"></i>
-            </div>
-        </div>
-    </div>
-</div>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 {% endblock %}
-{% block javascripts %}{% endblock %}
+{% block content %}
+    {% if license > 0 %}
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ node | number_format(0, ',', '.') }}</h3>
+                        <p>Node</p>
+                    </div>
+                    <div class="icon">
+                        <i class="cib-joomla"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ service | number_format(0, ',', '.') }}</h3>
+                        <p>Servis</p>
+                    </div>
+                    <div class="icon">
+                        <i class="cil-room"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ endpoint | number_format(0, ',', '.') }}</h3>
+                        <p>Endpoint</p>
+                    </div>
+                    <div class="icon">
+                        <i class="cil-sync"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{ uptime | number_format(2, ',', '.') }}<sup style="font-size: 20px;">%</sup></h3>
+                        <p>Uptime</p>
+                    </div>
+                    <div class="icon">
+                        <i class="cib-adguard"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <form role="form" method="post" action="{{ path('admin_home') }}" enctype="multipart/form-data">
+                    <div class="card-body">
+                        {{ form_widget(form) }}
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-outline-primary">{{ 'sas.form.action.submit' | trans({}, 'forms') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {% apply spaceless %}
+        <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+        <script>
+            $(document).ready(function () {
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+
+                {% for message in app.flashes('info') %}
+                    toastr['success']('{{ message | trans({}, 'pages') }}');
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                    toastr['error']('{{ message | trans({}, 'pages') }}');
+                {% endfor %}
+            });
+        </script>
+    {% endapply %}
+{% endblock %}

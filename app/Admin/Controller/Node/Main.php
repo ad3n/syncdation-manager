@@ -9,7 +9,7 @@ use KejawenLab\ApiSkeleton\Pagination\Paginator;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Node;
 use KejawenLab\Application\Form\NodeType;
-use KejawenLab\Application\Node\NodeService;
+use KejawenLab\Application\Domain\NodeService;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -108,3 +108,6 @@ sas:
             list: 'Riwayat Pekerjaan Terjadwal'
             success: 'Sukses'
             failed: 'Gagal'
+        license:
+            saved: 'Lisensi berhasil ditambahkan'
+            not_saved: 'Gagal menyimpan lisensi'

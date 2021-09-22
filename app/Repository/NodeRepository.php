@@ -7,7 +7,7 @@ namespace KejawenLab\Application\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\Application\Entity\Node;
-use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
+use KejawenLab\Application\Domain\Model\NodeRepositoryInterface;
 
 /**
  * @method Node|null find($id, $lockMode = null, $lockVersion = null)

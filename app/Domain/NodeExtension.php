@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Node;
+namespace KejawenLab\Application\Domain;
 
 use Iterator;
-use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Repository\ServiceRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Node\Model;
+namespace KejawenLab\Application\Domain\Model;
 
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
 
@@ -16,8 +16,6 @@ interface NodeInterface extends EntityInterface
     public function getName(): ?string;
 
     public function getHost(): ?string;
-
-    public function getPrefix(): ?string;
 
     public function getApiKey(): ?string;
 

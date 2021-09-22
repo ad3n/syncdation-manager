@@ -6,7 +6,7 @@ namespace KejawenLab\Application\Form;
 
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
 use KejawenLab\Application\Entity\Endpoint;
-use KejawenLab\Application\Node\Model\EndpointInterface;
+use KejawenLab\Application\Domain\Model\EndpointInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;

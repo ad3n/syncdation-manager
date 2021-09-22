@@ -9,9 +9,9 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\Application\Entity\Endpoint;
-use KejawenLab\Application\Node\Model\EndpointInterface;
-use KejawenLab\Application\Node\Model\EndpointRepositoryInterface;
-use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\EndpointInterface;
+use KejawenLab\Application\Domain\Model\EndpointRepositoryInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 
 /**
  * @method Endpoint|null find($id, $lockMode = null, $lockVersion = null)

@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use KejawenLab\ApiSkeleton\Util\StringUtil;
-use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Repository\NodeRepository;
 use OpenApi\Annotations as OA;
 use Ramsey\Uuid\UuidInterface;
@@ -45,7 +45,12 @@ class Node implements NodeInterface
     private UuidInterface $id;
 
     /**
-     * @ORM\Column(type="string", length=7)
+     * @ORM\ManyToOne(targetEntity=License::class, cascade={"persist"})
+     **/
+    private ?License $license;
+
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true)
      *
      * @Assert\Length(max=7)
      * @Assert\NotBlank()
@@ -55,7 +60,7 @@ class Node implements NodeInterface
     private ?string $code;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Assert\Length(max=255)
      * @Assert\NotBlank()
@@ -65,7 +70,7 @@ class Node implements NodeInterface
     private ?string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Assert\Length(max=255)
      * @Assert\NotBlank()
@@ -77,15 +82,6 @@ class Node implements NodeInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"read"})
-     */
-    private ?string $prefix;
-
-    /**
-     * @ORM\Column(type="string", length=255)
      *
      * @Assert\Length(max=255)
      * @Assert\NotBlank()
@@ -116,14 +112,14 @@ class Node implements NodeInterface
     private ?\DateTime $lastDown;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      *
      * @Groups({"read"})
      */
     private int $downtime;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      *
      * @Groups({"read"})
      */
@@ -134,7 +130,6 @@ class Node implements NodeInterface
         $this->code = null;
         $this->name = null;
         $this->host = null;
-        $this->prefix = null;
         $this->startAt = null;
         $this->lastPing = null;
         $this->lastDown = null;
@@ -175,16 +170,6 @@ class Node implements NodeInterface
     public function setHost(string $host): void
     {
         $this->host = $host;
-    }
-
-    public function getPrefix(): ?string
-    {
-        return $this->prefix;
-    }
-
-    public function setPrefix(?string $prefix): void
-    {
-        $this->prefix = $prefix;
     }
 
     public function getApiKey(): ?string

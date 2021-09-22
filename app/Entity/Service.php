@@ -9,7 +9,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Repository\ServiceRepository;
 use OpenApi\Annotations as OA;
 use Ramsey\Uuid\UuidInterface;

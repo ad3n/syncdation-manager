@@ -12,7 +12,7 @@ use FOS\RestBundle\View\View;
 use KejawenLab\ApiSkeleton\Pagination\Paginator;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Entity\Node;
-use KejawenLab\Application\Node\NodeService;
+use KejawenLab\Application\Domain\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Node\Query;
+namespace KejawenLab\Application\Domain\Query;
 
 use Doctrine\ORM\QueryBuilder;
 use KejawenLab\ApiSkeleton\Pagination\Query\AbstractQueryExtension;
 use KejawenLab\ApiSkeleton\Util\StringUtil;
-use KejawenLab\Application\Node\Model\EndpointInterface;
+use KejawenLab\Application\Domain\Model\EndpointInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

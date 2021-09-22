@@ -28,10 +28,6 @@ final class NodeType extends AbstractType
             'required' => true,
             'label' => 'sas.form.field.node.host',
         ]);
-        $builder->add('prefix', null, [
-            'required' => false,
-            'label' => 'sas.form.field.node.prefix',
-        ]);
         $builder->add('apiKey', null, [
             'required' => true,
             'label' => 'sas.form.field.node.apiKey',

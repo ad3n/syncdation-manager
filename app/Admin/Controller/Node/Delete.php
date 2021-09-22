@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Admin\Controller\Node;
 
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Node\Model\NodeInterface;
-use KejawenLab\Application\Node\NodeService;
+use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Domain\NodeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

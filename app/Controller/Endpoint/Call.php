@@ -6,10 +6,10 @@ namespace KejawenLab\Application\Controller\Endpoint;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Node\EndpointService;
-use KejawenLab\Application\Node\Model\EndpointInterface;
-use KejawenLab\Application\Node\Model\NodeInterface;
-use KejawenLab\Application\Node\NodeService;
+use KejawenLab\Application\Domain\EndpointService;
+use KejawenLab\Application\Domain\Model\EndpointInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Domain\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

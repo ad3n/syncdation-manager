@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Node\Model;
+namespace KejawenLab\Application\Domain\Model;
 
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
 
