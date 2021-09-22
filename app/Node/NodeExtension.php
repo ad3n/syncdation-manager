@@ -6,6 +6,7 @@ namespace KejawenLab\Application\Node;
 
 use Iterator;
 use KejawenLab\Application\Node\Model\NodeInterface;
+use KejawenLab\Application\Repository\ServiceRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -14,7 +15,7 @@ use Twig\TwigFunction;
  */
 final class NodeExtension extends AbstractExtension
 {
-    public function __construct(private NodeService $service)
+    public function __construct(private NodeService $service, private ServiceRepository $serviceRepository)
     {
     }
 
@@ -37,8 +38,13 @@ final class NodeExtension extends AbstractExtension
         return [];
     }
 
+    /**
+     * @param NodeInterface $node
+     *
+     * @return NodeInterface[]
+     */
     public function getServices(NodeInterface $node): array
     {
-        return $this->service->getServices($node);
+        return $this->serviceRepository->findByNode($node);
     }
 }

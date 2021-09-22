@@ -7,8 +7,10 @@ namespace KejawenLab\Application\Node;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
+use KejawenLab\Application\Entity\Service;
 use KejawenLab\Application\Node\Model\NodeInterface;
 use KejawenLab\Application\Node\Model\NodeRepositoryInterface;
+use KejawenLab\Application\Repository\ServiceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -25,6 +27,7 @@ final class NodeService extends AbstractService implements ServiceInterface
         MessageBusInterface $messageBus,
         NodeRepositoryInterface $repository,
         AliasHelper $aliasHelper,
+        private ServiceRepository $serviceRepository,
         private HttpClientInterface $httpClient
     ) {
         parent::__construct($messageBus, $repository, $aliasHelper);
@@ -77,7 +80,33 @@ final class NodeService extends AbstractService implements ServiceInterface
             }
 
             $this->save($node);
+
+            $services = $this->getServices($node);
+            foreach ($services as $service) {
+                $data = $this->serviceRepository->findOneBy(['identifier' => $service['id'], 'type' => $service['type']]);
+                if (!$data instanceof Service) {
+                    $data = new Service();
+                    $data->setNode($node);
+                    $data->setIdentifier($service['id']);
+                }
+
+                $data->setType($service['type']);
+                $data->setName($service['name']);
+                $data->setPort((int) $service['port']);
+
+                $this->serviceRepository->persist($data);
+            }
+
+            $this->serviceRepository->commit();
         } catch (TransportExceptionInterface) {
+            if ($node->getStatus()) {
+                $node->setLastDown(new \DateTime());
+            }
+
+            $node->setStatus(false);
+
+            $this->save($node);
+
             return false;
         }
 
@@ -140,6 +169,14 @@ final class NodeService extends AbstractService implements ServiceInterface
 
             return $result;
         } catch (Throwable) {
+            if ($node->getStatus()) {
+                $node->setLastDown(new \DateTime());
+            }
+
+            $node->setStatus(false);
+
+            $this->save($node);
+
             return [];
         }
     }

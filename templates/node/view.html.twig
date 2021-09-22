@@ -111,15 +111,15 @@
                                             <ul class="list-group p-0">
                                                 <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.node.service_name' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service['name'] }}</a>
+                                                    <a class="float-right">{{ service.name }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.node.service_type' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service['type'] }}</a>
+                                                    <a class="float-right">{{ service.type | upper }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.node.service_port' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service['port'] }}</a>
+                                                    <a class="float-right">{{ service.port }}</a>
                                                 </li>
                                             </ul>
                                         </div>
