@@ -25,6 +25,11 @@ final class LicenseRepository extends AbstractRepository
         parent::__construct($registry, License::class);
     }
 
+    public function findByKey(string $key): ?License
+    {
+        return $this->findOneBy(['key' => $key]);
+    }
+
     /**
      * @throws OptimisticLockException
      * @throws ORMException

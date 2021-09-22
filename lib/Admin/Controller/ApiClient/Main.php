@@ -49,6 +49,7 @@ final class Main extends AbstractController
         $client->setUser($user);
         $form = $this->createForm(ApiClientType::class, $client);
         if ($request->isMethod(Request::METHOD_POST)) {
+            $request->getSession()->remove('id');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->service->save($form->getData());

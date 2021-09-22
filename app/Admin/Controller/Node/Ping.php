@@ -40,6 +40,6 @@ final class Ping extends AbstractController
             $this->addFlash('error', 'sas.page.node.ping_failed');
         }
 
-        return new RedirectResponse($this->generateUrl(Get::class, ['id' => $node->getId()]));
+        return new RedirectResponse($this->generateUrl(Main::class, $request->query->all()));
     }
 }

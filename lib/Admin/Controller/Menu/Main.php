@@ -50,6 +50,7 @@ final class Main extends AbstractController
 
         $form = $this->createForm(MenuType::class, $menu);
         if ($request->isMethod(Request::METHOD_POST)) {
+            $request->getSession()->remove('id');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->service->save($form->getData());

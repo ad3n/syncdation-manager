@@ -33,6 +33,14 @@ final class NodeService extends AbstractService implements ServiceInterface
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
 
+    /**
+     * @return NodeInterface[]
+     */
+    public function getActiveNodes(): array
+    {
+        return $this->repository->findActiveNodes();
+    }
+
     public function calculateUptime(): float
     {
         return $this->repository->countUptime();

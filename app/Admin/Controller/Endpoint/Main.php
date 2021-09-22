@@ -62,6 +62,7 @@ final class Main extends AbstractController
 
         $form = $this->createForm(EndpointType::class, $endpoint);
         if ($request->isMethod(Request::METHOD_POST)) {
+            $request->getSession()->remove('id');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();

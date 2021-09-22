@@ -28,7 +28,7 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @return mixed[]
+     * @return ServiceInterface[]
      */
     public function all(): array
     {

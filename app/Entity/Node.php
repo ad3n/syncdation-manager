@@ -127,6 +127,7 @@ class Node implements NodeInterface
 
     public function __construct()
     {
+        $this->license = null;
         $this->code = null;
         $this->name = null;
         $this->host = null;
@@ -140,6 +141,16 @@ class Node implements NodeInterface
     public function getId(): ?string
     {
         return (string) $this->id;
+    }
+
+    public function getLicense(): ?License
+    {
+        return $this->license;
+    }
+
+    public function setLicense(License $license): void
+    {
+        $this->license = $license;
     }
 
     public function getCode(): ?string

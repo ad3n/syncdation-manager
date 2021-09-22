@@ -20,8 +20,8 @@
                                 <button type="submit" id="sasSearch" class="btn btn-default">
                                     <i class="cil-search pr-1 align-middle"></i>{{ 'sas.table.action.search' | trans({}, 'tables') }}
                                 </button>
-                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Download', {nodeId: nodeId}) }}">
-                                    <i class="cil-arrow-circle-bottom pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.download' | trans({}, 'tables') }}
+                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Update', {nodeId: nodeId}) }}">
+                                    <i class="cil-sync pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.update' | trans({}, 'tables') }}
                                 </a>
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                             No<a class="float-right">{{ (key + 1) + (paginator['per_page'] * (paginator['page'] - 1)) }}</a>
                         </li>
                         {% for property in properties %}
-                            {% if property.name not in ["id", "totalCall"] %}
+                            {% if property.name not in ["id"] %}
                                 {% if 'node' == property.name %}
                                     {% set node = attribute(data, property.name) %}
                                     <li class="list-group-item">
@@ -49,9 +49,6 @@
                         {% endfor %}
                         <li class="list-group-item p-1">
                             <div class="btn-group col-lg-12 col-md-12 col-sm-12" role="group">
-                                <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Get', {id: data.id, nodeId: nodeId}) }}" class="btn btn-sm btn-outline-secondary">
-                                    {{ 'sas.table.action.view' | trans({}, 'tables') }}
-                                </a>
                                 {% if is_granted('edit', menu) %}
                                     <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Put', ({id: data.id, nodeId: nodeId}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
                                         {{ 'sas.table.action.edit' | trans({}, 'tables') }}

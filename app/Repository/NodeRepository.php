@@ -6,6 +6,7 @@ namespace KejawenLab\Application\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Entity\Node;
 use KejawenLab\Application\Domain\Model\NodeRepositoryInterface;
 
@@ -22,6 +23,17 @@ final class NodeRepository extends AbstractRepository implements NodeRepositoryI
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Node::class);
+    }
+
+    /**
+     * @return NodeInterface[]
+     */
+    public function findActiveNodes(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('o');
+        $queryBuilder->orWhere($queryBuilder->expr()->eq('o.status', $queryBuilder->expr()->literal(true)));
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function countUptime(): float

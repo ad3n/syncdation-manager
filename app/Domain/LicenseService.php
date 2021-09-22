@@ -63,9 +63,12 @@ final class LicenseService extends AbstractService implements ServiceInterface
         }
 
         $result = json_decode($response->getContent(), true);
+        $holder = $this->repository->findByKey($license);
+        if (!$holder instanceof License) {
+            $holder = new License();
+            $holder->setKey($license);
+        }
 
-        $holder = new License();
-        $holder->setKey($license);
         $holder->setName($result['name']);
         $holder->setEmail($result['email']);
         $holder->setCompany($result['company']);

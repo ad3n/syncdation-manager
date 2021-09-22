@@ -115,6 +115,15 @@ final class EndpointService extends AbstractService implements ServiceInterface
     private function request(EndpointInterface $endpoint, string $method): int
     {
         try {
+            $data = [
+                'path' => $endpoint->getPath(),
+                'sql' => $endpoint->getSQL(),
+            ];
+
+            if (count($endpoint->getDefaults()) > 0) {
+                $data['defaults'] = $endpoint->getDefaults();
+            }
+
             $node = $endpoint->getNode();
             $response = $this->httpClient->request(
                 $method,
@@ -124,11 +133,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
                         'Content-Type' => 'application/json',
                         'X-Syncdation-Key' => $node->getApiKey(),
                     ],
-                    'json' => [
-                        'path' => $endpoint->getPath(),
-                        'sql' => $endpoint->getSQL(),
-                        'defaults' => $endpoint->getDefaults()?: null,
-                    ]
+                    'json' => $data,
                 ]
             );
 

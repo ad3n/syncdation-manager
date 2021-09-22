@@ -15,7 +15,7 @@ use Twig\TwigFunction;
  */
 final class NodeExtension extends AbstractExtension
 {
-    public function __construct(private NodeService $service, private ServiceRepository $serviceRepository)
+    public function __construct(private ServiceRepository $serviceRepository)
     {
     }
 
@@ -24,18 +24,7 @@ final class NodeExtension extends AbstractExtension
      */
     public function getFunctions(): iterable
     {
-        yield new TwigFunction('node_info', [$this, 'getInfo']);
         yield new TwigFunction('node_services', [$this, 'getServices']);
-    }
-
-    public function getInfo(NodeInterface $node): array
-    {
-        $info = $this->service->getInfo($node);
-        if (array_key_exists('holder', $info)) {
-            return $info['holder'];
-        }
-
-        return [];
     }
 
     /**

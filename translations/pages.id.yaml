@@ -86,6 +86,7 @@ sas:
             name_not_provided: 'Nama token wajib diisi'
             max_api_client_reached: 'Jumlah Api Anda telah mencapai maksimal'
         node:
+            updated: 'Node berhasil diperbarui'
             saved: 'Node berhasil disimpan'
             deleted: 'Node berhasil dihapus'
             not_found: 'Node tidak ditemukan'
@@ -97,9 +98,11 @@ sas:
             view: 'Detil Node'
             services: 'Daftar Servis'
         endpoint:
+            updated: 'Endpoint berhasil diperbarui'
             saved: 'Endpoint berhasil disimpan'
             deleted: 'Endpoint berhasil dihapus'
             not_found: 'Endpoint tidak ditemukan'
+            not_saved: 'Endpoint gagal ditambahkan'
             list: 'Daftar Endpoint'
             add: 'Tambah Endpoint'
             edit: 'Ubah Endpoint'

@@ -30,35 +30,52 @@ final class NodeUpdateEndpointCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $nodes = $this->service->all();
+        $nodes = $this->service->getActiveNodes();
         foreach ($nodes as $node) {
             $endpoints = $this->endpointService->getByNode($node);
-            foreach ($endpoints as $endpoint) {
-                Coroutine::create(function () use ($node, $endpoint): void {
-                    $serverEndpoints = $this->service->getEndpoints($node);
-                    $exist = false;
-                    foreach ($serverEndpoints as $serverEndpoint) {
-                        if ($endpoint->getPath() === $serverEndpoint['path']) {
-                            $exist = true;
+            if (count($endpoints) > 0) {
+                foreach ($endpoints as $endpoint) {
+                    Coroutine::create(function () use ($node, $endpoint): void {
+                        $serverEndpoints = $this->service->getEndpoints($node);
+                        $exist = false;
+                        foreach ($serverEndpoints as $serverEndpoint) {
+                            if ($endpoint->getPath() === $serverEndpoint['path']) {
+                                $exist = true;
+                            }
+
+                            $entity = $this->endpointService->getByNodeAndPath($node, $serverEndpoint['path']);
+                            if (null === $entity) {
+                                $entity = new Endpoint();
+                                $entity->setPath($serverEndpoint['path']);
+                                $entity->setNode($node);
+                            }
+
+                            $entity->setSql($serverEndpoint['sql']);
+                            $entity->setDefaults($serverEndpoint['defaults']);
+
+                            $this->endpointService->save($entity);
                         }
 
-                        $entity = $this->endpointService->getByNodeAndPath($node, $serverEndpoint['path']);
-                        if (null === $entity) {
-                            $entity = new Endpoint();
-                            $entity->setPath($serverEndpoint['path']);
-                            $entity->setNode($node);
+                        if (!$exist) {
+                            $this->endpointService->add($endpoint);
                         }
-
-                        $entity->setSql($serverEndpoint['sql']);
-                        $entity->setDefaults($serverEndpoint['defaults']);
-
-                        $this->endpointService->save($entity);
+                    });
+                }
+            } else {
+                $serverEndpoints = $this->service->getEndpoints($node);
+                foreach ($serverEndpoints as $serverEndpoint) {
+                    $entity = $this->endpointService->getByNodeAndPath($node, $serverEndpoint['path']);
+                    if (null === $entity) {
+                        $entity = new Endpoint();
+                        $entity->setPath($serverEndpoint['path']);
+                        $entity->setNode($node);
                     }
 
-                    if (!$exist) {
-                        $this->endpointService->add($endpoint);
-                    }
-                });
+                    $entity->setSql($serverEndpoint['sql']);
+                    $entity->setDefaults($serverEndpoint['defaults']);
+
+                    $this->endpointService->save($entity);
+                }
             }
         }
 

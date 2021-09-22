@@ -58,6 +58,10 @@ final class EndpointType extends AbstractType
                 return json_encode($defaults);
             },
             function ($defaults) {
+                if (null === $defaults) {
+                    $defaults = "{}";
+                }
+
                 return json_decode($defaults, true);
             }
         ));

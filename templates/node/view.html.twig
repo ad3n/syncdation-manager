@@ -22,47 +22,10 @@
                                     </li>
                                 {% endif %}
                             {% endfor %}
-                            {% set info = node_info(data) %}
-                            {% if info is not empty %}
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_name') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["name"] }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_email') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["email"] }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_company') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["company"] }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_issued_by') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["issued_by"] }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_valid_until') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["valid_until"] | date('Y-m-d H:i:s', 'Asia/Jakarta') }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_last_used') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["activate_at"] | date('Y-m-d H:i:s', 'Asia/Jakarta') }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_max_node') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["max_node"] }}</a>
-                                </li>
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.license_max_service') | trans({}, 'tables') }}
-                                    <a class="float-right">{{ info["max_service"] }}</a>
-                                </li>
-                            {% endif %}
                         </ul>
                     </div>
                     <div class="card-footer">
                         <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Main') }}" class="btn btn-outline-secondary">{{ 'sas.form.action.back' | trans({}, 'forms') }}</a>
-                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main', {'nodeId': data.id }) }}" class="btn btn-outline-primary ml-1">{{ 'sas.form.action.view_endpoint' | trans({}, 'forms') }}</a>
-                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Ping', {'id': data.id }) }}" class="btn btn-outline-danger ml-1">{{ 'sas.form.action.ping' | trans({}, 'forms') }}</a>
                     </div>
                 </div>
             </div>
@@ -110,31 +73,31 @@
                                         <div class="card-body p-0">
                                             <ul class="list-group p-0">
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_type' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.type' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.type | upper }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_port' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.port' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.port }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_name' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.name' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.name }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_uptime' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.uptime' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.uptime }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_successed' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.successed' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.successed }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_failed' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.failed' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.failed }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.node.service_description' | trans({}, 'tables')}}
+                                                    {{ 'sas.table.column.service.description' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.description }}</a>
                                                 </li>
                                             </ul>
