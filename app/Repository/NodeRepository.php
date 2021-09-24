@@ -7,8 +7,8 @@ namespace KejawenLab\Application\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\Application\Domain\Model\NodeInterface;
-use KejawenLab\Application\Entity\Node;
 use KejawenLab\Application\Domain\Model\NodeRepositoryInterface;
+use KejawenLab\Application\Entity\Node;
 
 /**
  * @method Node|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,6 +34,11 @@ final class NodeRepository extends AbstractRepository implements NodeRepositoryI
         $queryBuilder->orWhere($queryBuilder->expr()->eq('o.status', $queryBuilder->expr()->literal(true)));
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findByHost(string $host): ?NodeInterface
+    {
+        return $this->findOneBy(['host' => $host]);
     }
 
     public function countUptime(): float

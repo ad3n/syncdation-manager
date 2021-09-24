@@ -6,7 +6,6 @@ namespace KejawenLab\Application\Domain\Query;
 
 use Doctrine\ORM\QueryBuilder;
 use KejawenLab\ApiSkeleton\Pagination\Query\AbstractQueryExtension;
-use KejawenLab\ApiSkeleton\Util\StringUtil;
 use KejawenLab\Application\Domain\Model\EndpointInterface;
 use Symfony\Component\HttpFoundation\Request;
 

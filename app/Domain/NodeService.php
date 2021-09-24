@@ -7,9 +7,9 @@ namespace KejawenLab\Application\Domain;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
-use KejawenLab\Application\Entity\Service;
 use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Domain\Model\NodeRepositoryInterface;
+use KejawenLab\Application\Entity\Service;
 use KejawenLab\Application\Repository\ServiceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +39,11 @@ final class NodeService extends AbstractService implements ServiceInterface
     public function getActiveNodes(): array
     {
         return $this->repository->findActiveNodes();
+    }
+
+    public function getByHost(string $host): ?NodeInterface
+    {
+        return $this->repository->findByHost($host);
     }
 
     public function calculateUptime(): float

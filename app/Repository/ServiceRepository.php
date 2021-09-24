@@ -9,8 +9,8 @@ use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceableRepositoryInterface;
-use KejawenLab\Application\Entity\Service;
 use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Entity\Service;
 
 /**
  * @method Service|null find($id, $lockMode = null, $lockVersion = null)

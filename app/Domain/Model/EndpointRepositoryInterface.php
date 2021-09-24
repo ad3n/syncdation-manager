@@ -13,6 +13,8 @@ interface EndpointRepositoryInterface extends PaginatableRepositoryInterface
 {
     public function findByNodeAndPath(NodeInterface $node, string $path): ?EndpointInterface;
 
+    public function findByPath(string $path): array;
+
     /**
      * @param NodeInterface $node
      *

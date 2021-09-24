@@ -77,6 +77,16 @@ final class EndpointService extends AbstractService implements ServiceInterface
     }
 
     /**
+     * @param string $path
+     *
+     * @return EndpointInterface[]
+     */
+    public function getByPath(string $path): array
+    {
+        return $this->repository->findByPath($path);
+    }
+
+    /**
      * @param NodeInterface $node
      *
      * @return EndpointInterface[]

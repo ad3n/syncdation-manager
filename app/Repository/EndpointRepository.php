@@ -8,10 +8,10 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
-use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Domain\Model\EndpointInterface;
 use KejawenLab\Application\Domain\Model\EndpointRepositoryInterface;
 use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Entity\Endpoint;
 
 /**
  * @method Endpoint|null find($id, $lockMode = null, $lockVersion = null)
@@ -41,6 +41,16 @@ final class EndpointRepository extends AbstractRepository implements EndpointRep
     public function findByNodeAndPath(NodeInterface $node, string $path): ?EndpointInterface
     {
         return $this->findOneBy(['node' => $node, 'path' => $path]);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return Endpoint[]
+     */
+    public function findByPath(string $path): array
+    {
+        return $this->findBy(['path' => $path]);
     }
 
     /**

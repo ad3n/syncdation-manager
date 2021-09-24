@@ -7,17 +7,17 @@ namespace KejawenLab\Application\Admin\Controller\Endpoint;
 use KejawenLab\ApiSkeleton\Admin\Controller\AbstractController;
 use KejawenLab\ApiSkeleton\Pagination\Paginator;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Entity\Endpoint;
-use KejawenLab\Application\Form\EndpointType;
+use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 use KejawenLab\Application\Domain\EndpointService;
 use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Domain\NodeService;
+use KejawenLab\Application\Entity\Endpoint;
+use KejawenLab\Application\Form\EndpointType;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use KejawenLab\Application\Admin\Controller\Node\Main as NodeMain;
 
 /**
  * @Permission(menu="ENDPOINT", actions={Permission::VIEW})

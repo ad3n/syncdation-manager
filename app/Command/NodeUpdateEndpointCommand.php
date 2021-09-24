@@ -2,9 +2,9 @@
 
 namespace KejawenLab\Application\Command;
 
-use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Domain\EndpointService;
 use KejawenLab\Application\Domain\NodeService;
+use KejawenLab\Application\Entity\Endpoint;
 use Swoole\Coroutine;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

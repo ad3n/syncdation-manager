@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Form;
 
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
-use KejawenLab\Application\Entity\Endpoint;
 use KejawenLab\Application\Domain\Model\EndpointInterface;
+use KejawenLab\Application\Entity\Endpoint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;

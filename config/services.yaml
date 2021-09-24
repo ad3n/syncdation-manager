@@ -19,6 +19,8 @@ services:
             iterable $removers: !tagged_iterator semart.permission_remover
             iterable $groups: !tagged_iterator semart.setting_group
             Redis $redis: '@snc_redis.default'
+            string $licenseServer: '%env(resolve:LICENSE_SERVER)%'
+            string $licenseServerKey: '%env(resolve:LICENSE_SERVER_KEY)%'
 
     # makes classes in lib/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

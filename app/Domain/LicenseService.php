@@ -7,7 +7,7 @@ namespace KejawenLab\Application\Domain;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
-use KejawenLab\Application\Domain\Model\EndpointRepositoryInterface;
+use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Entity\License;
 use KejawenLab\Application\Entity\Node;
 use KejawenLab\Application\Repository\LicenseRepository;
@@ -25,15 +25,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 final class LicenseService extends AbstractService implements ServiceInterface
 {
-    private const LICENSE_SERVER = 'http://192.168.8.102:1579';
-    private const LICENSE_SERVER_KEY = '807955a4461f3742dc9715389bf0b488c17bbbc55888638fe5768ceea0ac00520701def30411b530a1124e00ad429014623f49ce15901996c1f1ae3ffc2079cf';
-
     public function __construct(
         MessageBusInterface $messageBus,
         LicenseRepository $repository,
         AliasHelper $aliasHelper,
         private HttpClientInterface $httpClient,
-        private NodeService $nodeService
+        private NodeService $nodeService,
+        private string $licenseServer,
+        private string $licenseServerKey
     ) {
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
@@ -48,11 +47,11 @@ final class LicenseService extends AbstractService implements ServiceInterface
     {
         $response = $this->httpClient->request(
             Request::METHOD_GET,
-            sprintf('%s/licenses', self::LICENSE_SERVER),
+            sprintf('%s/licenses', $this->licenseServer),
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-Syncdation-Key' => self::LICENSE_SERVER_KEY,
+                    'X-Syncdation-Key' => $this->licenseServerKey,
                     'X-Syncdation-License-Key' => $license,
                 ]
             ]
@@ -80,10 +79,13 @@ final class LicenseService extends AbstractService implements ServiceInterface
         $holder->setMaxService($result['max_service']);
 
         foreach ($result['active_nodes'] as $host => $status) {
-            $node = new Node();
-            $node->setHost($host);
+            $node = $this->nodeService->getByHost($host);
+            if (!$node instanceof NodeInterface) {
+                $node = new Node();
+                $node->setHost($host);
 
-            $this->nodeService->persist($node);
+                $this->nodeService->persist($node);
+            }
         }
 
         $this->save($holder);

@@ -8,15 +8,12 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Domain\EndpointService;
 use KejawenLab\Application\Domain\Model\EndpointInterface;
-use KejawenLab\Application\Domain\Model\NodeInterface;
-use KejawenLab\Application\Domain\NodeService;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Permission(menu="ENDPOINT", actions={Permission::VIEW})
@@ -25,12 +22,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class Call extends AbstractController
 {
-    public function __construct(private EndpointService $service, private NodeService $nodeService)
+    public function __construct(private EndpointService $service)
     {
     }
 
     /**
-     * @Rest\Get("/services/nodes/{nodeId}/endpoints/call/{path}", name=Call::class, requirements={"path"=".+"})
+     * @Rest\Get("/endpoints/call/{path}", name=Call::class, requirements={"path"=".+"})
      *
      * @OA\Tag(name="Endpoint")
      * @OA\Response(
@@ -49,24 +46,26 @@ final class Call extends AbstractController
      * @Security(name="Bearer")
      *
      * @param Request $request
-     * @param string $nodeId
      * @param string $path
      *
      * @return Response
      */
-    public function __invoke(Request $request, string $nodeId, string $path): Response
+    public function __invoke(Request $request, string $path): Response
     {
-        /** @var NodeInterface $node */
-        $node = $this->nodeService->get($nodeId);
-        if (null === $node) {
-            throw new NotFoundHttpException();
+        $endpoints = $this->service->getByPath(sprintf('/%s', $path));
+        foreach ($endpoints as $endpoint) {
+            if (!$endpoint instanceof EndpointInterface) {
+                continue;
+            }
+
+            $result = $this->service->call($endpoint, $request->query->all());
+            if (empty($result)) {
+                continue;
+            }
+
+            return new JsonResponse($result);
         }
 
-        $endpoint = $this->service->getByNodeAndPath($node, sprintf('/%s', $path));
-        if (!$endpoint instanceof EndpointInterface) {
-            throw new NotFoundHttpException();
-        }
-
-        return new JsonResponse($this->service->call($endpoint, $request->query->all()));
+        return new JsonResponse([]);
     }
 }

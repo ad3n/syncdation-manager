@@ -51,11 +51,9 @@
                                             {{ 'sas.table.action.edit' | trans({}, 'tables') }}
                                         </a>
                                     {% endif %}
-                                    {% if data.startAt is not null %}
                                     <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Ping', {'id': data.id }) }}" class="btn btn-sm btn-outline-danger">
                                         {{ 'sas.form.action.ping' | trans({}, 'forms') }}
                                     </a>
-                                    {% endif %}
                                 </div>
                             </li>
                         </ul>

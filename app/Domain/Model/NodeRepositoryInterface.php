@@ -12,4 +12,6 @@ use KejawenLab\ApiSkeleton\Pagination\Model\PaginatableRepositoryInterface;
 interface NodeRepositoryInterface extends PaginatableRepositoryInterface
 {
     public function countUptime(): float;
+
+    public function findByHost(string $host): ?NodeInterface;
 }
