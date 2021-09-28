@@ -23,10 +23,10 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DashboardController extends Base
 {
     public function __construct(
-        private NodeService $nodeService,
+        private NodeService       $nodeService,
         private ServiceRepository $serviceRepository,
-        private LicenseService $licenseService,
-        private EndpointService $endpointService,
+        private LicenseService    $licenseService,
+        private EndpointService   $endpointService,
     ) {
     }
 

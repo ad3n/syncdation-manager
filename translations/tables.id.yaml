@@ -81,6 +81,7 @@ sas:
                 prefix: 'Prefix'
                 apiKey: 'Api Key'
             service:
+                node: 'Node'
                 name: 'Nama'
                 type: 'Tipe'
                 status: 'Status'
@@ -102,7 +103,7 @@ sas:
                 path: 'URI Path'
                 sql: 'SQL Query'
                 defaults: 'Nilai Default'
-                totalCall: 'Total Permintaan'
+                totalCall: 'Total Request'
             apiclientrequest:
                 apiClient: 'Api Client'
                 path: 'URL'

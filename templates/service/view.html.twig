@@ -24,7 +24,7 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Main') }}" class="btn btn-outline-secondary">{{ 'sas.form.action.back' | trans({}, 'forms') }}</a>
+                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Main') }}" class="btn btn-outline-secondary">{{ 'sas.form.action.back' | trans({}, 'forms') }}</a>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                         {% endfor %}
                     </div>
                     <div class="card-footer">
-                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Audit', {id: data.id}) }}" class="btn btn-outline-info">{{ 'sas.form.action.audit' | trans({}, 'forms') }}</a>
+                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Audit', {id: data.id}) }}" class="btn btn-outline-info">{{ 'sas.form.action.audit' | trans({}, 'forms') }}</a>
                     </div>
                 </div>
             </div>

@@ -31,7 +31,7 @@ final class Post extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/services/nodes", name=Post::class)
+     * @Rest\Post("/nodes", name=Post::class)
      *
      * @OA\Tag(name="Node")
      * @OA\RequestBody(

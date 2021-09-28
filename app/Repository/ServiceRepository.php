@@ -8,8 +8,8 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use KejawenLab\ApiSkeleton\Repository\AbstractRepository;
-use KejawenLab\ApiSkeleton\Service\Model\ServiceableRepositoryInterface;
 use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Domain\Model\ServiceRepositoryInterface;
 use KejawenLab\Application\Entity\Service;
 
 /**
@@ -20,7 +20,7 @@ use KejawenLab\Application\Entity\Service;
  *
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
  */
-final class ServiceRepository extends AbstractRepository implements ServiceableRepositoryInterface
+final class ServiceRepository extends AbstractRepository implements ServiceRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

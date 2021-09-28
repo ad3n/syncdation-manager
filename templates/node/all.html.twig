@@ -2,6 +2,8 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 {% endblock %}
 {% block content %}
     {% apply spaceless %}
@@ -17,46 +19,46 @@
                                 <button type="submit" id="sasSearch" class="btn btn-default">
                                     <i class="cil-search pr-1 align-middle"></i>{{ 'sas.table.action.search' | trans({}, 'tables') }}
                                 </button>
-                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Update') }}">
-                                    <i class="cil-sync pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.update' | trans({}, 'tables') }}
+                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Download') }}">
+                                    <i class="cil-arrow-circle-bottom pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.download' | trans({}, 'tables') }}
                                 </a>
                             </div>
                         </div>
                     </div>
                     {% for key, data in paginator['items'] %}
-                        <ul class="list-group p-1">
-                            <li class="list-group-item text-primary">
-                                No<a class="float-right">{{ (key + 1) + (paginator['per_page'] * (paginator['page'] - 1)) }}</a>
-                            </li>
-                            {% for property in properties %}
-                                {% if property.name not in ["id", "license", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
-                                    <li class="list-group-item text-primary">
-                                        {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
-                                        <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
-                                    </li>
+                    <ul class="list-group p-1">
+                        <li class="list-group-item text-primary">
+                            No<a class="float-right">{{ (key + 1) + (paginator['per_page'] * (paginator['page'] - 1)) }}</a>
+                        </li>
+                        {% for property in properties %}
+                            {% if property.name not in ["id", "license", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
+                                <li class="list-group-item text-primary">
+                                    {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                    <a class="float-right">{{ attribute(data, property.name) }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="list-group-item p-1">
+                            <div class="btn-group col-lg-12 col-md-12 col-sm-12" role="group">
+                                {% if is_granted('edit', menu) %}
+                                    <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Put', ({id: data.id}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
+                                        {{ 'sas.table.action.edit' | trans({}, 'tables') }}
+                                    </a>
                                 {% endif %}
-                            {% endfor %}
-                            <li class="list-group-item p-1">
-                                <div class="btn-group col-lg-12 col-md-12 col-sm-12" role="group">
-                                    {% if data.startAt is not null %}
-                                    <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Get', {id: data.id}) }}" class="btn btn-sm btn-outline-secondary">
-                                        {{ 'sas.table.action.view' | trans({}, 'tables') }}
-                                    </a>
-                                    <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main', {'nodeId': data.id }) }}" class="btn btn-sm btn-outline-primary">
-                                        {{ 'sas.form.action.view_endpoint' | trans({}, 'forms') }}
-                                    </a>
-                                    {% endif %}
-                                    {% if is_granted('edit', menu) %}
-                                        <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Put', ({id: data.id}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
-                                            {{ 'sas.table.action.edit' | trans({}, 'tables') }}
-                                        </a>
-                                    {% endif %}
-                                    <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Ping', {'id': data.id }) }}" class="btn btn-sm btn-outline-danger">
-                                        {{ 'sas.form.action.ping' | trans({}, 'forms') }}
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
+                                {% if is_granted('delete', menu) %}
+                                    <button type="button"
+                                            data-path="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Delete', {id: data.id}) }}"
+                                            data-notification="{{ 'sas.notification.delete.message' | trans({'%data%': semart_print(data)}, 'notifications') }}"
+                                            class="btn btn-sm btn-outline-danger delete"
+                                            data-toggle="modal"
+                                            data-target="#sasDeleteModal"
+                                    >
+                                        {{ 'sas.table.action.delete' | trans({}, 'tables') }}
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </li>
+                    </ul>
                     {% endfor %}
                 </div>
                 <div class="card-footer clearfix">
@@ -103,6 +105,7 @@
 {% block javascripts %}
     {% apply spaceless %}
         <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+        <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
         <script>
             $(document).ready(function () {
                 toastr.options = {
@@ -122,6 +125,10 @@
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 };
+
+                $('.select2').select2({
+                    theme: 'bootstrap4'
+                });
 
                 $('#sasSearchValue').val(getParameterByName('q'));
 

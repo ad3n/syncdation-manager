@@ -2,42 +2,42 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Admin\Controller\Endpoint;
+namespace KejawenLab\Application\Admin\Controller\Service;
 
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Domain\EndpointService;
-use KejawenLab\Application\Domain\Model\EndpointInterface;
+use KejawenLab\Application\Domain\Model\ServiceInterface;
+use KejawenLab\Application\Domain\ServiceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Permission(menu="ENDPOINT", actions={Permission::DELETE})
+ * @Permission(menu="SERVICE", actions={Permission::DELETE})
  *
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
  */
 final class Delete extends AbstractController
 {
-    public function __construct(private EndpointService $service)
+    public function __construct(private ServiceService $service)
     {
     }
 
     /**
-     * @Route("/endpoints/{id}/delete", name=Delete::class, methods={"GET"})
+     * @Route("/services/{id}/delete", name=Delete::class, methods={"GET"})
      */
     public function __invoke(string $id): Response
     {
-        $endpoint = $this->service->get($id);
-        if (!$endpoint instanceof EndpointInterface) {
-            $this->addFlash('error', 'sas.page.endpoint.not_found');
+        $service = $this->service->get($id);
+        if (!$service instanceof ServiceInterface) {
+            $this->addFlash('error', 'sas.page.service.not_found');
 
             return new RedirectResponse($this->generateUrl(Main::class));
         }
 
-        $this->service->remove($endpoint);
+        $this->service->remove($service);
 
-        $this->addFlash('info', 'sas.page.endpoint.deleted');
+        $this->addFlash('info', 'sas.page.service.deleted');
 
         return new RedirectResponse($this->generateUrl(Main::class));
     }

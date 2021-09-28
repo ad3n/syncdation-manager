@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace KejawenLab\Application\Controller\Node;
 
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
@@ -30,7 +28,7 @@ final class GetAll extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/services/nodes", name=GetAll::class)
+     * @Rest\Get("/nodes", name=GetAll::class)
      *
      * @OA\Tag(name="Node")
      * @OA\Parameter(
@@ -68,9 +66,6 @@ final class GetAll extends AbstractFOSRestController
      * @param Request $request
      *
      * @return View
-     *
-     * @throws NoResultException
-     * @throws NonUniqueResultException
      */
     public function __invoke(Request $request): View
     {

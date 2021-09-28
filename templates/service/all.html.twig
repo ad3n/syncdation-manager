@@ -19,7 +19,7 @@
                                 <button type="submit" id="sasSearch" class="btn btn-default">
                                     <i class="cil-search pr-1 align-middle"></i>{{ 'sas.table.action.search' | trans({}, 'tables') }}
                                 </button>
-                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Download') }}">
+                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Download') }}">
                                     <i class="cil-arrow-circle-bottom pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.download' | trans({}, 'tables') }}
                                 </a>
                             </div>
@@ -41,7 +41,7 @@
                                 {% else %}
                                     <li class="list-group-item text-primary">
                                         {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
-                                        <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
+                                        <a class="float-right">{{ attribute(data, property.name) }}</a>
                                     </li>
                                 {% endif %}
                             {% endif %}
@@ -49,13 +49,13 @@
                         <li class="list-group-item p-1">
                             <div class="btn-group col-lg-12 col-md-12 col-sm-12" role="group">
                                 {% if is_granted('edit', menu) %}
-                                    <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Put', ({id: data.id}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
+                                    <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Put', ({id: data.id}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
                                         {{ 'sas.table.action.edit' | trans({}, 'tables') }}
                                     </a>
                                 {% endif %}
                                 {% if is_granted('delete', menu) %}
                                     <button type="button"
-                                            data-path="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Delete', {id: data.id}) }}"
+                                            data-path="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Delete', {id: data.id}) }}"
                                             data-notification="{{ 'sas.notification.delete.message' | trans({'%data%': semart_print(data)}, 'notifications') }}"
                                             class="btn btn-sm btn-outline-danger delete"
                                             data-toggle="modal"
@@ -77,7 +77,7 @@
         {% if is_granted('add', menu) %}
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="card">
-                <form role="form" method="post" action="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main') }}" enctype="multipart/form-data">
+                <form role="form" method="post" action="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Main') }}" enctype="multipart/form-data">
                     <div class="card-body">
                         {{ form_widget(form) }}
                     </div>
@@ -150,7 +150,7 @@
                 });
 
                 $('#sasSearch').on('click', function () {
-                    window.location.href = '{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Main') }}?q=' + $('#sasSearchValue').val();
+                    window.location.href = '{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Main') }}?q=' + $('#sasSearchValue').val();
                 });
 
                 {% for message in app.flashes('info') %}

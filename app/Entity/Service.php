@@ -9,6 +9,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use KejawenLab\ApiSkeleton\Entity\EntityInterface;
 use KejawenLab\Application\Domain\Model\NodeInterface;
 use KejawenLab\Application\Repository\ServiceRepository;
 use OpenApi\Annotations as OA;
@@ -21,7 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class Service
+class Service implements EntityInterface
 {
     const TYPE_FILE = 'file';
     const TYPE_ELASTICSEARCH = 'elasticsearch';
@@ -197,5 +198,10 @@ class Service
     public function setClients(int $clients): void
     {
         $this->clients = $clients;
+    }
+
+    public function getNullOrString(): ?string
+    {
+        return $this->getName();
     }
 }

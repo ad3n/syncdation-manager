@@ -24,10 +24,10 @@ use Throwable;
 final class NodeService extends AbstractService implements ServiceInterface
 {
     public function __construct(
-        MessageBusInterface $messageBus,
-        NodeRepositoryInterface $repository,
-        AliasHelper $aliasHelper,
-        private ServiceRepository $serviceRepository,
+        MessageBusInterface         $messageBus,
+        NodeRepositoryInterface     $repository,
+        AliasHelper                 $aliasHelper,
+        private ServiceRepository   $serviceRepository,
         private HttpClientInterface $httpClient
     ) {
         parent::__construct($messageBus, $repository, $aliasHelper);

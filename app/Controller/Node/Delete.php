@@ -28,7 +28,7 @@ final class Delete extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Delete("/services/nodes/{id}", name=Delete::class)
+     * @Rest\Delete("/nodes/{id}", name=Delete::class)
      *
      * @OA\Tag(name="Node")
      * @OA\Response(
@@ -38,6 +38,7 @@ final class Delete extends AbstractFOSRestController
      *
      * @Security(name="Bearer")
      *
+     * @param Request $request
      * @param string $id
      *
      * @return View

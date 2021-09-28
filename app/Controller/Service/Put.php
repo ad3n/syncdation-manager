@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace KejawenLab\Application\Controller\Node;
+namespace KejawenLab\Application\Controller\Service;
 
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use KejawenLab\ApiSkeleton\Form\FormFactory;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Domain\Model\NodeInterface;
-use KejawenLab\Application\Domain\NodeService;
-use KejawenLab\Application\Entity\Node;
-use KejawenLab\Application\Form\NodeType;
+use KejawenLab\Application\Domain\Model\ServiceInterface;
+use KejawenLab\Application\Domain\ServiceService;
+use KejawenLab\Application\Entity\Service;
+use KejawenLab\Application\Form\ServiceType;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Permission(menu="NODE", actions={Permission::EDIT})
+ * @Permission(menu="SERVICE", actions={Permission::EDIT})
  *
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
  */
@@ -30,32 +30,32 @@ final class Put extends AbstractFOSRestController
 {
     public function __construct(
         private FormFactory $formFactory,
-        private NodeService $service,
+        private ServiceService $service,
         private TranslatorInterface $translator,
     ) {
     }
 
     /**
-     * @Rest\Put("/nodes/{id}", name=Put::class)
+     * @Rest\Put("/services/{id}", name=Put::class)
      *
-     * @OA\Tag(name="Node")
+     * @OA\Tag(name="Service")
      * @OA\RequestBody(
      *     content={
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
      *                 type="object",
-     *                 ref=@Model(type=NodeType::class)
+     *                 ref=@Model(type=ServiceType::class)
      *             )
      *         )
      *     }
      * )
      * @OA\Response(
      *     response=200,
-     *     description="Update node",
+     *     description="Update service",
      *     @OA\Schema(
      *         type="object",
-     *         ref=@Model(type=Node::class, groups={"read"})
+     *         ref=@Model(type=Service::class, groups={"read"})
      *     )
      * )
      *
@@ -68,18 +68,18 @@ final class Put extends AbstractFOSRestController
      */
     public function __invoke(Request $request, string $id): View
     {
-        $node = $this->service->get($id);
-        if (!$node instanceof NodeInterface) {
-            throw new NotFoundHttpException($this->translator->trans('sas.page.node.not_found', [], 'pages'));
+        $service = $this->service->get($id);
+        if (!$service instanceof ServiceInterface) {
+            throw new NotFoundHttpException($this->translator->trans('sas.page.service.not_found', [], 'pages'));
         }
 
-        $form = $this->formFactory->submitRequest(NodeType::class, $request, $node);
+        $form = $this->formFactory->submitRequest(ServiceType::class, $request, $service);
         if (!$form->isValid()) {
             return $this->view((array) $form->getErrors(), Response::HTTP_BAD_REQUEST);
         }
 
-        $this->service->save($node);
+        $this->service->save($service);
 
-        return $this->view($this->service->get($node->getId()));
+        return $this->view($this->service->get($service->getId()));
     }
 }

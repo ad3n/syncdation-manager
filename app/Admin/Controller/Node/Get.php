@@ -29,7 +29,9 @@ final class Get extends AbstractController
         parent::__construct($this->service);
     }
 
-    #[Route(path: '/services/nodes/{id}', name: Get::class, methods: ['GET'])]
+    /**
+     * @Route("/nodes/{id}", name=Get::class, methods={"GET"})
+     */
     public function __invoke(string $id): Response
     {
         $node = $this->service->get($id);
@@ -44,6 +46,6 @@ final class Get extends AbstractController
             $audit = $this->audit->getAudits($node, $id, 1);
         }
 
-        return $this->renderDetail($audit, new ReflectionClass(Node::class));
+        return $this->renderAudit($audit, new ReflectionClass(Node::class));
     }
 }

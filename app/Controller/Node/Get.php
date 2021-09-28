@@ -14,7 +14,6 @@ use KejawenLab\Application\Entity\Node;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -29,7 +28,7 @@ final class Get extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/services/nodes/{id}", name=Get::class)
+     * @Rest\Get("/nodes/{id}", name=Get::class)
      *
      * @OA\Tag(name="Node")
      * @OA\Response(
@@ -48,6 +47,7 @@ final class Get extends AbstractFOSRestController
      *
      * @Security(name="Bearer")
      *
+     * @param Request $request
      * @param string $id
      *
      * @return View

@@ -27,7 +27,9 @@ final class Main extends AbstractController
         parent::__construct($this->service, $paginator);
     }
 
-    #[Route(path: '/services/nodes', name: Main::class, methods: ['GET', 'POST'])]
+    /**
+     * @Route("/nodes", name=Main::class, methods={"GET", "POST"})
+     */
     public function __invoke(Request $request): Response
     {
         $node = new Node();
@@ -50,7 +52,6 @@ final class Main extends AbstractController
 
         $form = $this->createForm(NodeType::class, $node);
         if ($request->isMethod(Request::METHOD_POST)) {
-            $request->getSession()->remove('id');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->service->save($form->getData());
