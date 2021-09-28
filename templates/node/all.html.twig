@@ -31,11 +31,24 @@
                             No<a class="float-right">{{ (key + 1) + (paginator['per_page'] * (paginator['page'] - 1)) }}</a>
                         </li>
                         {% for property in properties %}
-                            {% if property.name not in ["id", "license", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
-                                <li class="list-group-item text-primary">
-                                    {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
-                                    <a class="float-right">{{ attribute(data, property.name) }}</a>
-                                </li>
+                            {% if property.name not in ["id", "license", "startAt", "lastPing", "uptime", "lastDown", "downtime"] %}
+                                {% if 'status' == property.name %}
+                                    <li class="list-group-item text-primary">
+                                        {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                        <a class="float-right">
+                                            {% if attribute(data, property.name) %}
+                                                <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.active' | trans({}, 'pages') }}</span>
+                                            {% else %}
+                                                <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.inactive' | trans({}, 'pages') }}</span>
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="list-group-item text-primary">
+                                        {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                        <a class="float-right">{{ attribute(data, property.name) }}</a>
+                                    </li>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                         <li class="list-group-item p-1">

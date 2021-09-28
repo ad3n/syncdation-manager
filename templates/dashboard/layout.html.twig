@@ -4,67 +4,52 @@
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 {% endblock %}
 {% block content %}
-    {% if license > 0 %}
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>{{ node | number_format(0, ',', '.') }}</h3>
-                        <p>Node</p>
-                    </div>
-                    <div class="icon">
-                        <i class="cib-joomla"></i>
-                    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ node | number_format(0, ',', '.') }}</h3>
+                    <p>Node</p>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3>{{ service | number_format(0, ',', '.') }}</h3>
-                        <p>Servis</p>
-                    </div>
-                    <div class="icon">
-                        <i class="cil-room"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>{{ endpoint | number_format(0, ',', '.') }}</h3>
-                        <p>Endpoint</p>
-                    </div>
-                    <div class="icon">
-                        <i class="cil-sync"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>{{ uptime | number_format(2, ',', '.') }}<sup style="font-size: 20px;">%</sup></h3>
-                        <p>Uptime</p>
-                    </div>
-                    <div class="icon">
-                        <i class="cib-adguard"></i>
-                    </div>
+                <div class="icon">
+                    <i class="cib-joomla"></i>
                 </div>
             </div>
         </div>
-    {% else %}
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
-                <form role="form" method="post" action="{{ path('admin_home') }}" enctype="multipart/form-data">
-                    <div class="card-body">
-                        {{ form_widget(form) }}
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-outline-primary">{{ 'sas.form.action.submit' | trans({}, 'forms') }}</button>
-                    </div>
-                </form>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ service | number_format(0, ',', '.') }}</h3>
+                    <p>Servis</p>
+                </div>
+                <div class="icon">
+                    <i class="cil-room"></i>
+                </div>
             </div>
         </div>
-    {% endif %}
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ endpoint | number_format(0, ',', '.') }}</h3>
+                    <p>Endpoint</p>
+                </div>
+                <div class="icon">
+                    <i class="cil-sync"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ uptime | number_format(2, ',', '.') }}<sup style="font-size: 20px;">%</sup></h3>
+                    <p>Uptime</p>
+                </div>
+                <div class="icon">
+                    <i class="cib-adguard"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {% apply spaceless %}
