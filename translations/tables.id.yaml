@@ -83,11 +83,11 @@ sas:
             service:
                 name: 'Nama'
                 type: 'Tipe'
-                port: 'Port'
-                uptime: 'Uptime'
+                status: 'Status'
+                processed: 'Total Diproses'
                 successed: 'Total Sukses'
                 failed: 'Total Gagal'
-                description: 'Statistik'
+                clients: 'Total Client'
             license:
                 name: 'Pemegang Lisensi'
                 email: 'Email'

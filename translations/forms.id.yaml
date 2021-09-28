@@ -63,7 +63,7 @@ sas:
             ping: 'Ping'
             cron_logs: 'Riwayat Pekerjaan'
             api_request_logs: 'Riwayat Permintaan'
-            view_endpoint: 'Daftar Endpoint'
+            view_endpoint: 'Endpoint'
             api_key: 'Daftar Token API'
             permission: 'Hak Akses'
             add: 'Tambah'

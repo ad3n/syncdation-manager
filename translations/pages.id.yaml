@@ -97,6 +97,9 @@ sas:
             edit: 'Ubah Node'
             view: 'Detil Node'
             services: 'Daftar Servis'
+        service:
+            active: 'ON'
+            inactive: 'OFF'
         endpoint:
             updated: 'Endpoint berhasil diperbarui'
             saved: 'Endpoint berhasil disimpan'

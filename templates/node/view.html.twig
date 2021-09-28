@@ -15,7 +15,7 @@
                     <div class="card-body p-1">
                         <ul class="list-group">
                             {% for property in properties %}
-                                {% if property.name not in ["id", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
+                                {% if property.name not in ["id", "license", "startAt", "lastPing", "uptime", "lastDown", "downtime", "status"] %}
                                     <li class="list-group-item text-primary">
                                         {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
                                         <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
@@ -73,20 +73,26 @@
                                         <div class="card-body p-0">
                                             <ul class="list-group p-0">
                                                 <li class="list-group-item text-primary">
+                                                    {{ 'sas.table.column.service.name' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.name | upper }}</a>
+                                                </li>
+                                                <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.service.type' | trans({}, 'tables')}}
                                                     <a class="float-right">{{ service.type | upper }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.service.port' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service.port }}</a>
+                                                    {{ 'sas.table.column.service.status' | trans({}, 'tables')}}
+                                                    <a class="float-right">
+                                                        {% if service.status %}
+                                                            <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.active' | trans({}, 'pages') }}</span>
+                                                        {% else %}
+                                                            <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.inactive' | trans({}, 'pages') }}</span>
+                                                        {% endif %}
+                                                    </a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.service.name' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service.name }}</a>
-                                                </li>
-                                                <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.service.uptime' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service.uptime }}</a>
+                                                    {{ 'sas.table.column.service.processed' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.processed }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
                                                     {{ 'sas.table.column.service.successed' | trans({}, 'tables')}}
@@ -97,8 +103,8 @@
                                                     <a class="float-right">{{ service.failed }}</a>
                                                 </li>
                                                 <li class="list-group-item text-primary">
-                                                    {{ 'sas.table.column.service.description' | trans({}, 'tables')}}
-                                                    <a class="float-right">{{ service.description }}</a>
+                                                    {{ 'sas.table.column.service.clients' | trans({}, 'tables')}}
+                                                    <a class="float-right">{{ service.clients }}</a>
                                                 </li>
                                             </ul>
                                         </div>

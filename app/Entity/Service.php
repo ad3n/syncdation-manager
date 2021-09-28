@@ -25,7 +25,7 @@ class Service
 {
     const TYPE_FILE = 'file';
     const TYPE_ELASTICSEARCH = 'elasticsearch';
-    const TYPE_DB = 'db';
+    const TYPE_DATABASE = 'database';
 
     use BlameableEntity;
     use SoftDeleteableEntity;
@@ -53,13 +53,6 @@ class Service
      *
      * @Groups({"read"})
      */
-    private ?string $identifier;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"read"})
-     */
     private ?string $name;
 
     /**
@@ -70,11 +63,18 @@ class Service
     private ?string $type;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      *
      * @Groups({"read"})
      */
-    private int $port;
+    private bool $status;
+
+    /**
+     * @ORM\Column(type="bigint")
+     *
+     * @Groups({"read"})
+     */
+    private int $processed;
 
     /**
      * @ORM\Column(type="bigint")
@@ -91,31 +91,23 @@ class Service
     private int $failed;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer")
      *
      * @Groups({"read"})
      */
-    private ?string $description;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Groups({"read"})
-     */
-    private ?string $uptime;
+    private int $clients;
 
     public function __construct()
     {
         $this->id = null;
-        $this->identifier = null;
         $this->node = null;
         $this->name = null;
         $this->type = null;
-        $this->port = 0;
+        $this->status = true;
+        $this->processed = 0;
         $this->successed = 0;
         $this->failed = 0;
-        $this->description = null;
-        $this->uptime = null;
+        $this->clients = 0;
     }
 
     public function getId(): string
@@ -131,16 +123,6 @@ class Service
     public function setNode(?NodeInterface $node): void
     {
         $this->node = $node;
-    }
-
-    public function getIdentifier(): ?string
-    {
-        return $this->identifier;
-    }
-
-    public function setIdentifier(?string $identifier): void
-    {
-        $this->identifier = $identifier;
     }
 
     public function getName(): ?string
@@ -160,21 +142,31 @@ class Service
 
     public function setType(?string $type): void
     {
-        if (!in_array($type, [self::TYPE_DB, self::TYPE_ELASTICSEARCH, self::TYPE_FILE])) {
+        if (!in_array($type, [self::TYPE_DATABASE, self::TYPE_ELASTICSEARCH, self::TYPE_FILE])) {
             throw new \InvalidArgumentException('Invalid type');
         }
 
         $this->type = $type;
     }
 
-    public function getPort(): int
+    public function isStatus(): bool
     {
-        return $this->port;
+        return $this->status;
     }
 
-    public function setPort(int $port): void
+    public function setStatus(bool $status): void
     {
-        $this->port = $port;
+        $this->status = $status;
+    }
+
+    public function getProcessed(): int
+    {
+        return $this->processed;
+    }
+
+    public function setProcessed(int $processed): void
+    {
+        $this->processed = $processed;
     }
 
     public function getSuccessed(): int
@@ -197,23 +189,13 @@ class Service
         $this->failed = $failed;
     }
 
-    public function getDescription(): ?string
+    public function getClients(): int
     {
-        return $this->description;
+        return $this->clients;
     }
 
-    public function setDescription(string $description): void
+    public function setClients(int $clients): void
     {
-        $this->description = $description;
-    }
-
-    public function getUptime(): ?string
-    {
-        return $this->uptime;
-    }
-
-    public function setUptime(?string $uptime): void
-    {
-        $this->uptime = $uptime;
+        $this->clients = $clients;
     }
 }
