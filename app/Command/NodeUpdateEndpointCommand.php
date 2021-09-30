@@ -50,7 +50,8 @@ final class NodeUpdateEndpointCommand extends Command
                                 $entity->setNode($node);
                             }
 
-                            $entity->setSql($serverEndpoint['sql']);
+                            $entity->setSelectSql($serverEndpoint['sql']['select']);
+                            $entity->setCountSql($serverEndpoint['sql']['count']);
                             $entity->setDefaults($serverEndpoint['defaults']);
 
                             $this->endpointService->save($entity);
@@ -71,7 +72,8 @@ final class NodeUpdateEndpointCommand extends Command
                         $entity->setNode($node);
                     }
 
-                    $entity->setSql($serverEndpoint['sql']);
+                    $entity->setSelectSql($serverEndpoint['sql']['select']);
+                    $entity->setCountSql($serverEndpoint['sql']['count']);
                     $entity->setDefaults($serverEndpoint['defaults']);
 
                     $this->endpointService->save($entity);

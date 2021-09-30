@@ -52,8 +52,12 @@ sas:
             endpoint:
                 node: 'Node'
                 path: 'URI Path'
-                sql: 'SQL Query'
+                select_sql: 'Select SQL'
+                count_sql: 'Count SQL'
                 defaults: 'Default Value'
+                per_client: 'Batasi Per User'
+                max_per_day: 'Maks. Per Hari'
+                max_per_month: 'Maks. Per Bulan'
             api_client:
                 name: 'Nama'
             license:

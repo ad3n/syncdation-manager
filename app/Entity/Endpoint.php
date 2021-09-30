@@ -71,7 +71,16 @@ class Endpoint implements EndpointInterface
      *
      * @Groups({"read"})
      */
-    private ?string $sql;
+    private ?string $selectSql;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank()
+     *
+     * @Groups({"read"})
+     */
+    private ?string $countSql;
 
     /**
      * @ORM\Column(type="json")
@@ -83,7 +92,28 @@ class Endpoint implements EndpointInterface
     private array $defaults;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
+     *
+     * @Groups({"read"})
+     */
+    private int $maxPerDay;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @Groups({"read"})
+     */
+    private int $maxPerMonth;
+
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @Groups({"read"})
+     */
+    private bool $perClient;
+
+    /**
+     * @ORM\Column(type="integer")
      *
      * @Groups({"read"})
      */
@@ -94,8 +124,12 @@ class Endpoint implements EndpointInterface
         $this->id = null;
         $this->node = null;
         $this->path = null;
-        $this->sql = null;
+        $this->selectSql = null;
+        $this->countSql = null;
         $this->defaults = [];
+        $this->perClient = false;
+        $this->maxPerDay = 0;
+        $this->maxPerMonth = 0;
         $this->totalCall = 0;
     }
 
@@ -124,14 +158,24 @@ class Endpoint implements EndpointInterface
         $this->path = StringUtil::lowercase($path);
     }
 
-    public function getSql(): ?string
+    public function getSelectSql(): ?string
     {
-        return $this->sql;
+        return $this->selectSql;
     }
 
-    public function setSql(?string $sql): void
+    public function setSelectSql(?string $selectSql): void
     {
-        $this->sql = $sql;
+        $this->selectSql = $selectSql;
+    }
+
+    public function getCountSql(): ?string
+    {
+        return $this->countSql;
+    }
+
+    public function setCountSql(?string $countSql): void
+    {
+        $this->countSql = $countSql;
     }
 
     public function getDefaults(): array
@@ -142,6 +186,36 @@ class Endpoint implements EndpointInterface
     public function setDefaults(array $defaults): void
     {
         $this->defaults = $defaults;
+    }
+
+    public function getMaxPerDay(): int
+    {
+        return $this->maxPerDay;
+    }
+
+    public function setMaxPerDay(int $maxPerDay): void
+    {
+        $this->maxPerDay = $maxPerDay;
+    }
+
+    public function getMaxPerMonth(): int
+    {
+        return $this->maxPerMonth;
+    }
+
+    public function setMaxPerMonth(int $maxPerMonth): void
+    {
+        $this->maxPerMonth = $maxPerMonth;
+    }
+
+    public function isPerClient(): bool
+    {
+        return $this->perClient;
+    }
+
+    public function setPerClient(bool $perClient): void
+    {
+        $this->perClient = $perClient;
     }
 
     public function getTotalCall(): int

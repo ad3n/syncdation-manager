@@ -101,6 +101,7 @@ sas:
             active: 'ON'
             inactive: 'OFF'
         endpoint:
+            request_limit: 'Batas permintaan telah tercapai'
             updated: 'Endpoint berhasil diperbarui'
             saved: 'Endpoint berhasil disimpan'
             deleted: 'Endpoint berhasil dihapus'

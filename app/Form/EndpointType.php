@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace KejawenLab\Application\Form;
 
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
+use KejawenLab\Application\Domain\Model\EndpointInterface;
 use KejawenLab\Application\Entity\Endpoint;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -36,14 +40,60 @@ final class EndpointType extends AbstractType
             'required' => true,
             'label' => 'sas.form.field.endpoint.path',
         ]);
-        $builder->add('sql', null, [
+        $builder->add('selectSql', null, [
             'required' => true,
-            'label' => 'sas.form.field.endpoint.sql',
+            'label' => 'sas.form.field.endpoint.select_sql',
+        ]);
+        $builder->add('countSql', null, [
+            'required' => true,
+            'label' => 'sas.form.field.endpoint.count_sql',
         ]);
         $builder->add('defaults', null, [
             'required' => true,
             'label' => 'sas.form.field.endpoint.defaults',
         ]);
+        $builder->add('perClient', null, [
+            'required' => false,
+            'label' => 'sas.form.field.endpoint.per_client',
+        ]);
+        $builder->add('maxPerDay', null, [
+            'required' => true,
+            'label' => 'sas.form.field.endpoint.max_per_day',
+        ]);
+        $builder->add('maxPerMonth', null, [
+            'required' => true,
+            'label' => 'sas.form.field.endpoint.max_per_month',
+        ]);
+
+        $builder->get('defaults')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($defaults) {
+                    if (null === $defaults) {
+                        $defaults = [];
+                    }
+
+                    return json_encode($defaults);
+                },
+                function ($defaults) {
+                    if (null === $defaults) {
+                        $defaults = "{}";
+                    }
+
+                    return json_decode($defaults, true);
+                }
+            ))
+        ;
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $endpoint = $event->getData();
+            $form = $event->getForm();
+
+            if ($endpoint instanceof EndpointInterface) {
+                if (null !== $endpoint->getPath()) {
+                    $form->remove('path');
+                }
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

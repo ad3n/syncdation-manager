@@ -19,8 +19,8 @@
                                 <button type="submit" id="sasSearch" class="btn btn-default">
                                     <i class="cil-search pr-1 align-middle"></i>{{ 'sas.table.action.search' | trans({}, 'tables') }}
                                 </button>
-                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Download') }}">
-                                    <i class="cil-arrow-circle-bottom pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.download' | trans({}, 'tables') }}
+                                <a class="btn btn-secondary" href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Endpoint\\Update') }}">
+                                    <i class="cil-sync pr-1 align-middle" aria-hidden="true"></i>{{ 'sas.table.action.update' | trans({}, 'tables') }}
                                 </a>
                             </div>
                         </div>
@@ -39,10 +39,23 @@
                                         <a class="float-right">{{ node.name }}</a>
                                     </li>
                                 {% else %}
-                                    <li class="list-group-item text-primary">
-                                        {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
-                                        <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
-                                    </li>
+                                    {% if 'perClient' == property.name %}
+                                        <li class="list-group-item text-primary">
+                                            {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                            <a class="float-right">
+                                                {% if attribute(data, property.name) %}
+                                                    <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.active' | trans({}, 'pages') }}</span>
+                                                {% else %}
+                                                    <span class="btn btn-sm btn-dark disabled">{{ 'sas.page.service.inactive' | trans({}, 'pages') }}</span>
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="list-group-item text-primary">
+                                            {{ ('sas.table.column.' ~ context ~ '.' ~ property.name) | trans({}, 'tables') }}
+                                            <a class="float-right">{{ semart_print(attribute(data, property.name)) }}</a>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

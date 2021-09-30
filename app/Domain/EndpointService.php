@@ -3,12 +3,15 @@
 declare(strict_types=1);
 
 namespace KejawenLab\Application\Domain;
+use KejawenLab\ApiSkeleton\ApiClient\Model\ApiClientInterface;
 use KejawenLab\ApiSkeleton\Pagination\AliasHelper;
 use KejawenLab\ApiSkeleton\Service\AbstractService;
 use KejawenLab\ApiSkeleton\Service\Model\ServiceInterface;
 use KejawenLab\Application\Domain\Model\EndpointInterface;
 use KejawenLab\Application\Domain\Model\EndpointRepositoryInterface;
+use KejawenLab\Application\Domain\Model\EndpointRequestRepositoryInterface;
 use KejawenLab\Application\Domain\Model\NodeInterface;
+use KejawenLab\Application\Entity\EndpointRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -25,7 +28,8 @@ final class EndpointService extends AbstractService implements ServiceInterface
         MessageBusInterface $messageBus,
         EndpointRepositoryInterface $repository,
         AliasHelper $aliasHelper,
-        private HttpClientInterface $httpClient
+        private HttpClientInterface $httpClient,
+        private EndpointRequestRepositoryInterface $endpointRequestRepository,
     ) {
         parent::__construct($messageBus, $repository, $aliasHelper);
     }
@@ -96,21 +100,56 @@ final class EndpointService extends AbstractService implements ServiceInterface
         return $this->repository->findByNode($node);
     }
 
-    public function call(EndpointInterface $endpoint, array $queries): array
+    public function isAllowToRequest(ApiClientInterface $apiClient, EndpointInterface $endpoint): bool
+    {
+        $callToday = $this->endpointRequestRepository->countEndpointPerApiClientToday($endpoint, $apiClient);
+        $callMonth = $this->endpointRequestRepository->countEndpointPerApiClientMonth($endpoint, $apiClient);
+
+        if (0 === $endpoint->getMaxPerDay()) {
+            if (0 === $endpoint->getMaxPerMonth()) {
+                return true;
+            }
+
+            if ($callMonth >= $endpoint->getMaxPerMonth()) {
+                return false;
+            }
+
+            return true;
+        }
+
+        if ($callToday >= $endpoint->getMaxPerDay()) {
+            return false;
+        }
+
+        if ($callMonth >= $endpoint->getMaxPerMonth()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function call(EndpointInterface $endpoint, ApiClientInterface $apiClient, array $queries): array
     {
         try {
             $node = $endpoint->getNode();
             $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/api/exposes%s', $node->getHost(), $endpoint->getPath()), [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-Syncdation-Key' => $node->getApiKey(),
+                    'X-Datasama-Key' => $node->getApiKey(),
                 ],
                 'query' => $queries,
             ]);
 
             $endpoint->call();
 
+            $request = new EndpointRequest();
+            $request->setApiClient($apiClient);
+            $request->setEndpoint($endpoint);
+            $request->setQueries($queries);
+
+            $this->endpointRequestRepository->persist($request);
             $this->save($endpoint);
+            $this->endpointRequestRepository->commit();
 
             if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return [];
@@ -127,7 +166,10 @@ final class EndpointService extends AbstractService implements ServiceInterface
         try {
             $data = [
                 'path' => $endpoint->getPath(),
-                'sql' => $endpoint->getSQL(),
+                'sql' => [
+                    'select' => $endpoint->getSelectSql(),
+                    'count' => $endpoint->getCountSql(),
+                ],
             ];
 
             if (count($endpoint->getDefaults()) > 0) {
@@ -141,7 +183,7 @@ final class EndpointService extends AbstractService implements ServiceInterface
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'X-Syncdation-Key' => $node->getApiKey(),
+                        'X-Datasama-Key' => $node->getApiKey(),
                     ],
                     'json' => $data,
                 ]

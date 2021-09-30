@@ -41,11 +41,6 @@ final class NodeService extends AbstractService implements ServiceInterface
         return $this->repository->findActiveNodes();
     }
 
-    public function getByHost(string $host): ?NodeInterface
-    {
-        return $this->repository->findByHost($host);
-    }
-
     public function calculateUptime(): float
     {
         return $this->repository->countUptime();
@@ -78,7 +73,7 @@ final class NodeService extends AbstractService implements ServiceInterface
             $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/api/ping', $node->getHost()), [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-Syncdation-Key' => $node->getApiKey(),
+                    'X-Datasama-Key' => $node->getApiKey(),
                 ],
             ]);
             $node->setLastPing(new \DateTime());
@@ -181,7 +176,7 @@ final class NodeService extends AbstractService implements ServiceInterface
             $response = $this->httpClient->request(Request::METHOD_GET, sprintf('%s/api/%s', $node->getHost(), $path), [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-Syncdation-Key' => $node->getApiKey(),
+                    'X-Datasama-Key' => $node->getApiKey(),
                 ],
             ]);
 

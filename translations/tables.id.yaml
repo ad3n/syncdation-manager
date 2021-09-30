@@ -101,9 +101,13 @@ sas:
             endpoint:
                 node: 'Node'
                 path: 'URI Path'
-                sql: 'SQL Query'
+                selectSql: 'Select Sql'
+                countSql: 'Count Sql'
                 defaults: 'Nilai Default'
                 totalCall: 'Total Request'
+                maxPerDay: 'Maks. Per Hari'
+                maxPerMonth: 'Maks. Per Bulan'
+                perClient: 'Batasi Per User'
             apiclientrequest:
                 apiClient: 'Api Client'
                 path: 'URL'

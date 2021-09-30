@@ -15,9 +15,17 @@ interface EndpointInterface extends EntityInterface
 
     public function getPath(): ?string;
 
-    public function getSQL(): ?string;
+    public function getSelectSql(): ?string;
+
+    public function getCountSql(): ?string;
 
     public function getDefaults(): array;
+
+    public function getMaxPerDay(): int;
+
+    public function getMaxPerMonth(): int;
+
+    public function isPerClient(): bool;
 
     public function getTotalCall(): int;
 

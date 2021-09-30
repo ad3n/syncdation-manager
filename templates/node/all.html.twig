@@ -39,7 +39,7 @@
                                             {% if attribute(data, property.name) %}
                                                 <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.active' | trans({}, 'pages') }}</span>
                                             {% else %}
-                                                <span class="btn btn-sm btn-success disabled">{{ 'sas.page.service.inactive' | trans({}, 'pages') }}</span>
+                                                <span class="btn btn-sm btn-dark disabled">{{ 'sas.page.service.inactive' | trans({}, 'pages') }}</span>
                                             {% endif %}
                                         </a>
                                     </li>
@@ -53,6 +53,9 @@
                         {% endfor %}
                         <li class="list-group-item p-1">
                             <div class="btn-group col-lg-12 col-md-12 col-sm-12" role="group">
+                                <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Ping', {'id': data.id }) }}" class="btn btn-sm btn-outline-primary">
+                                    {{ 'sas.form.action.ping' | trans({}, 'forms') }}
+                                </a>
                                 {% if is_granted('edit', menu) %}
                                     <a href="{{ path('KejawenLab\\Application\\Admin\\Controller\\Node\\Put', ({id: data.id}) | merge(app.request.query.all)) }}" class="btn btn-sm btn-outline-info">
                                         {{ 'sas.table.action.edit' | trans({}, 'tables') }}
