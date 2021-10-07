@@ -27,6 +27,7 @@ class Service implements EntityInterface
     const TYPE_FILE = 'file';
     const TYPE_ELASTICSEARCH = 'elasticsearch';
     const TYPE_DATABASE = 'database';
+    const TYPE_EXCEL = 'excel';
 
     use BlameableEntity;
     use SoftDeleteableEntity;
@@ -62,6 +63,97 @@ class Service implements EntityInterface
      * @Groups({"read"})
      */
     private ?string $type;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $hosts;
+
+    /**
+     * @ORM\Column(type="string", length=27)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $index;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $directory;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $driver;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $dbHost;
+
+    /**
+     * @ORM\Column(type="smallint")
+     *
+     * @Groups({"read"})
+     */
+    private int $dbPort;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $dbUser;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $dbPassword;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $dbName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $dbTable;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $dbColumns;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $prefixName;
+
+    /**
+     * @ORM\Column(type="string", length=17)
+     *
+     * @Groups({"read"})
+     */
+    private ?string $rotation;
 
     /**
      * @ORM\Column(type="boolean")
@@ -104,6 +196,19 @@ class Service implements EntityInterface
         $this->node = null;
         $this->name = null;
         $this->type = null;
+        $this->hosts = null;
+        $this->index = null;
+        $this->directory = null;
+        $this->driver = null;
+        $this->dbHost = null;
+        $this->dbPort = 0;
+        $this->dbUser = null;
+        $this->dbPassword = null;
+        $this->dbName = null;
+        $this->dbTable = null;
+        $this->dbColumns = null;
+        $this->prefixName = null;
+        $this->rotation = null;
         $this->status = true;
         $this->processed = 0;
         $this->successed = 0;
@@ -143,11 +248,141 @@ class Service implements EntityInterface
 
     public function setType(?string $type): void
     {
-        if (!in_array($type, [self::TYPE_DATABASE, self::TYPE_ELASTICSEARCH, self::TYPE_FILE])) {
+        if (!in_array($type, [self::TYPE_DATABASE, self::TYPE_ELASTICSEARCH, self::TYPE_EXCEL, self::TYPE_FILE])) {
             throw new \InvalidArgumentException('Invalid type');
         }
 
         $this->type = $type;
+    }
+
+    public function getHosts(): ?string
+    {
+        return $this->hosts;
+    }
+
+    public function setHosts(string $hosts): void
+    {
+        $this->hosts = $hosts;
+    }
+
+    public function getIndex(): ?string
+    {
+        return $this->index;
+    }
+
+    public function setIndex(string $index): void
+    {
+        $this->index = $index;
+    }
+
+    public function getDirectory(): ?string
+    {
+        return $this->directory;
+    }
+
+    public function setDirectory(string $directory): void
+    {
+        $this->directory = $directory;
+    }
+
+    public function getDriver(): ?string
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(string $driver): void
+    {
+        $this->driver = $driver;
+    }
+
+    public function getDbHost(): ?string
+    {
+        return $this->dbHost;
+    }
+
+    public function setDbHost(string $dbHost): void
+    {
+        $this->dbHost = $dbHost;
+    }
+
+    public function getDbPort(): int
+    {
+        return $this->dbPort;
+    }
+
+    public function setDbPort(int $dbPort): void
+    {
+        $this->dbPort = $dbPort;
+    }
+
+    public function getDbUser(): ?string
+    {
+        return $this->dbUser;
+    }
+
+    public function setDbUser(string $dbUser): void
+    {
+        $this->dbUser = $dbUser;
+    }
+
+    public function getDbPassword(): ?string
+    {
+        return $this->dbPassword;
+    }
+
+    public function setDbPassword(?string $dbPassword): void
+    {
+        $this->dbPassword = $dbPassword;
+    }
+
+    public function getDbName(): ?string
+    {
+        return $this->dbName;
+    }
+
+    public function setDbName(string $dbName): void
+    {
+        $this->dbName = $dbName;
+    }
+
+    public function getDbTable(): ?string
+    {
+        return $this->dbTable;
+    }
+
+    public function setDbTable(string $dbTable): void
+    {
+        $this->dbTable = $dbTable;
+    }
+
+    public function getDbColumns(): ?string
+    {
+        return $this->dbColumns;
+    }
+
+    public function setDbColumns(string $dbColumns): void
+    {
+        $this->dbColumns = $dbColumns;
+    }
+
+    public function getPrefixName(): ?string
+    {
+        return $this->prefixName;
+    }
+
+    public function setPrefixName(string $prefixName): void
+    {
+        $this->prefixName = $prefixName;
+    }
+
+    public function getRotation(): ?string
+    {
+        return $this->rotation;
+    }
+
+    public function setRotation(string $rotation): void
+    {
+        $this->rotation = $rotation;
     }
 
     public function isStatus(): bool

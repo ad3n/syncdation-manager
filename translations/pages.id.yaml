@@ -100,6 +100,8 @@ sas:
         service:
             active: 'ON'
             inactive: 'OFF'
+            saved: 'Service berhasil disimpan'
+            not_saved: 'Terjadi error. Service gagal disimpan'
         endpoint:
             request_limit: 'Batas permintaan telah tercapai'
             updated: 'Endpoint berhasil diperbarui'

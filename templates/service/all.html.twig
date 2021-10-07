@@ -90,7 +90,50 @@
             <div class="card">
                 <form role="form" method="post" action="{{ path('KejawenLab\\Application\\Admin\\Controller\\Service\\Main') }}" enctype="multipart/form-data">
                     <div class="card-body">
-                        {{ form_widget(form) }}
+                        <div class="card" id="service-elasticsearch">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ 'sas.form.field.service.type_elasticsearch' | trans({}, 'forms') }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="cil-minus"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {{ form_widget(elasticsearch_form) }}
+                            </div>
+                        </div>
+                        <div class="card collapsed-card" id="service-database">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ 'sas.form.field.service.type_database' | trans({}, 'forms') }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="cil-minus"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {{ form_widget(database_form) }}
+                            </div>
+                        </div>
+                        <div class="card collapsed-card" id="service-file">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ 'sas.form.field.service.type_file' | trans({}, 'forms') }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="cil-minus"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {{ form_widget(file_form) }}
+                            </div>
+                        </div>
+                        <div class="card collapsed-card" id="service-excel">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ 'sas.form.field.service.type_excel' | trans({}, 'forms') }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="cil-minus"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {{ form_widget(excel_form) }}
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-outline-primary">{{ 'sas.form.action.submit' | trans({}, 'forms') }}</button>
@@ -144,6 +187,46 @@
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 };
+
+                $('#service-elasticsearch').on('expanded.lte.cardwidget', function() {
+                    $('#elasticsearch_service_type').val("elasticsearch");
+                    $('#database_service_type').val("");
+                    $('#file_service_type').val("");
+                    $('#excel_service_type').val("");
+                    $("#service-database").CardWidget("collapse");
+                    $("#service-file").CardWidget("collapse");
+                    $("#service-excel").CardWidget("collapse");
+                });
+
+                $('#service-database').on('expanded.lte.cardwidget', function() {
+                    $('#database_service_type').val("database");
+                    $('#elasticsearch_service_type').val("");
+                    $('#file_service_type').val("");
+                    $('#excel_service_type').val("");
+                    $("#service-elasticsearch").CardWidget("collapse");
+                    $("#service-file").CardWidget("collapse");
+                    $("#service-excel").CardWidget("collapse");
+                });
+
+                $('#service-file').on('expanded.lte.cardwidget', function() {
+                    $('#file_service_type').val("file");
+                    $('#elasticsearch_service_type').val("");
+                    $('#database_service_type').val("");
+                    $('#excel_service_type').val("");
+                    $("#service-elasticsearch").CardWidget("collapse");
+                    $("#service-database").CardWidget("collapse");
+                    $("#service-excel").CardWidget("collapse");
+                });
+
+                $('#service-excel').on('expanded.lte.cardwidget', function() {
+                    $('#excel_service_type').val("excel");
+                    $('#elasticsearch_service_type').val("");
+                    $('#database_service_type').val("");
+                    $('#file_service_type').val("");
+                    $("#service-elasticsearch").CardWidget("collapse");
+                    $("#service-database").CardWidget("collapse");
+                    $("#service-file").CardWidget("collapse");
+                });
 
                 $('.select2').select2({
                     theme: 'bootstrap4'

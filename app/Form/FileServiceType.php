@@ -7,13 +7,14 @@ namespace KejawenLab\Application\Form;
 use KejawenLab\ApiSkeleton\Entity\EntityInterface;
 use KejawenLab\Application\Entity\Service;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Muhamad Surya Iksanudin<surya.iksanudin@gmail.com>
  */
-final class ServiceType extends AbstractType
+final class FileServiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,32 +34,15 @@ final class ServiceType extends AbstractType
             'placeholder' => 'sas.form.field.empty_select',
         ]);
         $builder->add('name', null, [
-            'required' => true,
+            'required' => false,
             'label' => 'sas.form.field.service.name',
         ]);
-        $builder->add('type', null, [
-            'required' => true,
-            'label' => 'sas.form.field.service.type',
+        $builder->add('directory', null, [
+            'required' => false,
+            'label' => 'sas.form.field.service.directory',
         ]);
-        $builder->add('status', null, [
-            'required' => true,
-            'label' => 'sas.form.field.service.status',
-        ]);
-        $builder->add('processed', null, [
-            'required' => true,
-            'label' => 'sas.form.field.service.processed',
-        ]);
-        $builder->add('successed', null, [
-            'required' => true,
-            'label' => 'sas.form.field.service.successed',
-        ]);
-        $builder->add('failed', null, [
-            'required' => true,
-            'label' => 'sas.form.field.service.failed',
-        ]);
-        $builder->add('clients', null, [
-            'required' => true,
-            'label' => 'sas.form.field.service.clients',
+        $builder->add('type', HiddenType::class, [
+            'required' => false,
         ]);
     }
 

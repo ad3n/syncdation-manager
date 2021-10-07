@@ -12,7 +12,7 @@ use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
 use KejawenLab\Application\Domain\Model\ServiceInterface;
 use KejawenLab\Application\Domain\ServiceService;
 use KejawenLab\Application\Entity\Service;
-use KejawenLab\Application\Form\ServiceType;
+use KejawenLab\Application\Form\ElasticsearchServiceType;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -73,7 +73,7 @@ final class Put extends AbstractFOSRestController
             throw new NotFoundHttpException($this->translator->trans('sas.page.service.not_found', [], 'pages'));
         }
 
-        $form = $this->formFactory->submitRequest(ServiceType::class, $request, $service);
+        $form = $this->formFactory->submitRequest(ElasticsearchServiceType::class, $request, $service);
         if (!$form->isValid()) {
             return $this->view((array) $form->getErrors(), Response::HTTP_BAD_REQUEST);
         }

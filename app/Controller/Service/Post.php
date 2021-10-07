@@ -9,7 +9,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use KejawenLab\ApiSkeleton\Form\FormFactory;
 use KejawenLab\ApiSkeleton\Security\Annotation\Permission;
-use KejawenLab\Application\Domain\Model\ServiceInterface;
 use KejawenLab\Application\Domain\ServiceService;
 use KejawenLab\Application\Entity\Service;
 use KejawenLab\Application\Form\ServiceType;
@@ -67,7 +66,7 @@ final class Post extends AbstractFOSRestController
             return $this->view((array) $form->getErrors(), Response::HTTP_BAD_REQUEST);
         }
 
-        /** @var ServiceInterface $service */
+        /** @var Service $service */
         $service = $form->getData();
         $this->service->save($service);
 
