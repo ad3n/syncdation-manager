@@ -27,7 +27,7 @@ else
 fi
 
 chmod 777 -R var/
-chmod 777 -R storage/
+mkdir -f storage && chmod 777 -R storage/
 chmod 755 -R config/
 chmod 755 -R vendor/
 chmod 755 -R public/
