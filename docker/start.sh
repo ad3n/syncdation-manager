@@ -26,8 +26,12 @@ else
     chmod 777 -R var/
 fi
 
+if [[ ! -d "/semart/storage" ]]; then
+    mkdir -p /semart/storage
+    chmod 777 -R /semart/storage/
+fi
+
 chmod 777 -R var/
-mkdir -f storage && chmod 777 -R storage/
 chmod 755 -R config/
 chmod 755 -R vendor/
 chmod 755 -R public/
